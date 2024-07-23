@@ -13,8 +13,6 @@ func receiver(msg *wcferry.WxMsg) {
 		return // 白名单限制
 	}
 
-	println(msg.Type)
-
 	switch msg.Type {
 	case 1: //文字
 		receiver1(copyMsg(msg))

@@ -62,7 +62,11 @@ func Route() {
 	rg.POST("webhook/delete", webhook.delete)
 	rg.POST("webhook/:token/:app", webhook.receive)
 
-	forword := Forword{}
-	rg.POST("forword/list", forword.list)
+	forward := Forward{}
+	rg.POST("forward/list", forward.list)
+	rg.POST("forward/create", forward.create)
+	rg.POST("forward/detail", forward.detail)
+	rg.POST("forward/update", forward.update)
+	rg.POST("forward/delete", forward.delete)
 
 }

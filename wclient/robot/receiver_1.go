@@ -9,7 +9,6 @@ import (
 // 处理新消息
 func receiver1(msg *wcferry.WxMsg) {
 
-	println(msg)
 	// 处理聊天指令
 	if msg.IsGroup || wcferry.ContactType(msg.Sender) == "好友" {
 		output := ApplyHandlers(msg)

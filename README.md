@@ -2,6 +2,9 @@
 
 [![Wrest Chat Builder](https://github.com/opentdp/wrest-chat/actions/workflows/release.yml/badge.svg)](https://github.com/opentdp/wrest-chat/actions/workflows/release.yml)
 
+fork地址：
+[![Opentdp]](https://github.com/opentdp/wrest-chat)
+
 智能聊天助手，是一个通用的聊天辅助程序，通过 **Nanomsg 协议** 与聊天软件互通，内置 WEB 管理界面，可接入GPT、Gemini、星火、文心、混元、通义千问等大语言模型。目前已适配 *PC微信*，更多聊天软件适配中，敬请期待！
 
 > 本项目**未对微信程序进行任何破解或修改**，与微信互操作的能力均基于开源项目 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现，感谢各位开源贡献者。
