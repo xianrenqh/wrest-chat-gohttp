@@ -2,7 +2,7 @@ package wrobot
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/opentdp/wrest-chat/dbase/forword"
+	"github.com/xianrenqh/wrest-chat-gohttp/dbase/forword"
 )
 
 type Forword struct{}
