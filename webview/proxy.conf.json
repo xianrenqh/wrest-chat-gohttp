@@ -1,0 +1,23 @@
+{
+    "/api": {
+        "target": "http://127.0.0.1:7600",
+        "changeOrigin": true,
+        "secure": false
+    },
+    "/bot": {
+        "target": "http://127.0.0.1:7600",
+        "changeOrigin": true,
+        "secure": false
+    },
+    "/wcf": {
+        "target": "http://127.0.0.1:7600",
+        "changeOrigin": true,
+        "secure": false
+    },
+    "/wcf/socket_receiver": {
+        "target": "http://127.0.0.1:7600",
+        "changeOrigin": true,
+        "secure": false,
+        "ws": true
+    }
+}

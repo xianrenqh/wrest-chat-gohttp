@@ -1,0 +1,14 @@
+.col>* {
+    height: calc(100vh - 128px);
+    overflow: hidden;
+}
+
+.list-group {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.avatar img {
+    width: 40px;
+    height: 40px;
+}

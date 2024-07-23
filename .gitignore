@@ -1,0 +1,17 @@
+*.log
+*.lock
+.DS_Store
+
+.idea
+.vscode
+
+.rst
+.local.yml
+wrest.db*
+
+node_modules/
+build/
+docs/
+logs/
+*.exe
+*.dll

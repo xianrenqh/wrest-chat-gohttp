@@ -1,0 +1,91 @@
+<layout-header></layout-header>
+
+<nav class="container-xl mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item"><a routerLink="/llmodel/list">模型配置</a></li>
+        <li class="breadcrumb-item active">编辑</li>
+    </ol>
+</nav>
+
+<div class="container-xl mb-3">
+    <form class="row gy-3" (ngSubmit)="updateLLModel()" #myform="ngForm">
+        <div class="col-12">
+            <label class="form-label">指令 *</label>
+            <input type="text" name="mid" class="form-control" [(ngModel)]="formdata.mid" required />
+            <div class="form-text">
+                用于生成模型切换指令，不影响接口请求
+                @if (formdata.mid && formdata.mid.length > 1) {
+                【 注册指令 <b>/cm:{{formdata.mid}}</b> 】
+                }
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">级别</label>
+            <select name="level" class="form-select" [(ngModel)]="formdata.level">
+                @for (item of userLevels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                用于限制模型使用权限
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">族类 *</label>
+            <input name="family" class="form-control" list="familyOptions" [(ngModel)]="formdata.family" required>
+            <datalist id="familyOptions">
+                <option value="通义千问">通义千问</option>
+                <option value="文心">文心</option>
+                <option value="Gemini">Gemini</option>
+                <option value="GPT-4">GPT-4</option>
+                <option value="GPT-3.5">GPT-3.5</option>
+                <option value="混元">混元</option>
+                <option value="星火">星火</option>
+            </datalist>
+            <div class="form-text">
+                用于在指令中描述模型，列表内容仅供参考，不影响接口请求
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">服务商 *</label>
+            <select name="provider" class="form-select" [(ngModel)]="formdata.provider" required>
+                @for (item of aiModels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                未支持的服务商，可尝试使用协议兼容代理
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">模型 *</label>
+            <select name="model" class="form-select" [(ngModel)]="formdata.model" required>
+                <option value="-">不指定</option>
+                @for (item of aiModels[formdata.provider].models | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value}}</option>
+                }
+            </select>
+            <div class="form-text">
+                必须和服务商对应，缺失模型请提 Issue 或 PR 补全
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">密钥 *</label>
+            <input type="text" name="secret" class="form-control" [(ngModel)]="formdata.secret" required />
+            <div class="form-text" *ngIf="formdata.provider">
+                {{aiModels[formdata.provider].keystyle || '请填写从服务商获取的 API-KEY'}}
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">接入点</label>
+            <input type="text" name="endpoint" class="form-control" [(ngModel)]="formdata.endpoint" />
+            <div class="form-text" *ngIf="formdata.provider">
+                留空则使用官方接口 {{aiModels[formdata.provider].endpoint}}
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
+        </div>
+    </form>
+</div>

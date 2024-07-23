@@ -1,0 +1,56 @@
+<layout-header></layout-header>
+
+<nav class="container-xl mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item active">Wcferry</li>
+        <li class="breadcrumb-item active">通讯录</li>
+    </ol>
+</nav>
+
+<div class="container-xl mb-3">
+    <div class="row justify-content-between">
+        <div class="col"></div>
+        <div class="col-5 col-md-4 text-end">
+            <select class="form-select" [(ngModel)]="contactType">
+                <option value="好友">好友</option>
+                @for (item of contactTypes | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.key}}</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="container-xl mb-3">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">wxid</th>
+                <th scope="col" class="d-none d-md-table-cell">code</th>
+                <th scope="col">name</th>
+                <th scope="col" class="d-none d-md-table-cell">gender</th>
+                <th scope="col" class="d-none d-lg-table-cell">country</th>
+                <th scope="col" class="d-none d-lg-table-cell">province</th>
+                <th scope="col" class="d-none d-xl-table-cell">remark</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of contacts; track item.wxid; let i = $index) {
+            @if (item.type == contactType) {
+            <tr>
+                <th scope="row">{{i+1}}</th>
+                <td>{{item.wxid}}</td>
+                <td class="d-none d-md-table-cell">{{item.code}}</td>
+                <td>{{item.name}}</td>
+                <td class="d-none d-md-table-cell">{{item.gender}}</td>
+                <td class="d-none d-lg-table-cell">{{item.country}}</td>
+                <td class="d-none d-lg-table-cell">{{item.province}}</td>
+                <td class="d-none d-xl-table-cell">{{item.remark}}</td>
+            </tr>
+            }
+            }
+        </tbody>
+    </table>
+</div>

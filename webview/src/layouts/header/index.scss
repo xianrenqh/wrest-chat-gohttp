@@ -1,0 +1,9 @@
+.active,
+.active>a.nav-link {
+    background: transparent !important;
+    color: var(--bs-primary) !important;
+}
+
+.dropdown-menu {
+    z-index: 2000;
+}
