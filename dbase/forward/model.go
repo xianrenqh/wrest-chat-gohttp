@@ -2,7 +2,7 @@ package forward
 
 import (
 	"github.com/opentdp/go-helper/dborm"
-	"github.com/opentdp/wrest-chat/dbase/tables"
+	"github.com/xianrenqh/wrest-chat-gohttp/dbase/tables"
 )
 
 // 创建消息转发
