@@ -1,4 +1,4 @@
-module github.com/opentdp/wrest-chat
+module github.com/xianrenqh/wrest-chat-gohttp
 
 go 1.21.3
 
