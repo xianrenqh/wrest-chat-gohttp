@@ -41,7 +41,7 @@ function output($data)
 function fetch($url)
 {
     if (strpos($url, '/') === 0) {
-        $url = 'https://api.rehi.org' . $url;
+        $url = 'https://api.rehi.900808.cn' . $url;
     }
     if ($body = file_get_contents($url)) {
         $json = json_decode($body, true);

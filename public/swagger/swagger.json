@@ -499,6 +499,150 @@
                 }
             }
         },
+        "/bot/forward/create": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::消息转发"
+                ],
+                "summary": "添加消息转发配置",
+                "parameters": [
+                    {
+                        "description": "添加消息转发配置参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forward.CreateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/bot/forward/delete": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::消息转发"
+                ],
+                "summary": "删除消息转发配置",
+                "parameters": [
+                    {
+                        "description": "删除消息转发参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forward.DeleteParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/bot/forward/detail": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::消息转发"
+                ],
+                "summary": "获取消息转发配置",
+                "parameters": [
+                    {
+                        "description": "获取消息转发参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forward.FetchParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tables.Forward"
+                        }
+                    }
+                }
+            }
+        },
+        "/bot/forward/list": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::消息转发"
+                ],
+                "summary": "消息转发列表",
+                "parameters": [
+                    {
+                        "description": "获取消息转发列表参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forward.FetchAllParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tables.Forward"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bot/forward/update": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::消息转发"
+                ],
+                "summary": "修改消息转发配置",
+                "parameters": [
+                    {
+                        "description": "修改消息转发参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forward.UpdateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/bot/keyword/create": {
             "post": {
                 "produces": [
@@ -2513,6 +2657,88 @@
                 }
             }
         },
+        "forward.CreateParam": {
+            "type": "object",
+            "properties": {
+                "rd": {
+                    "type": "integer"
+                },
+                "roomid": {
+                    "type": "string"
+                },
+                "send_roomids": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "wxid": {
+                    "type": "string"
+                }
+            }
+        },
+        "forward.DeleteParam": {
+            "type": "object",
+            "properties": {
+                "rd": {
+                    "type": "integer"
+                },
+                "roomid": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "forward.FetchAllParam": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "forward.FetchParam": {
+            "type": "object",
+            "properties": {
+                "rd": {
+                    "type": "integer"
+                },
+                "roomid": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "forward.UpdateParam": {
+            "type": "object",
+            "properties": {
+                "rd": {
+                    "type": "integer"
+                },
+                "roomid": {
+                    "type": "string"
+                },
+                "send_roomids": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "wxid": {
+                    "type": "string"
+                }
+            }
+        },
         "keyword.CreateParam": {
             "type": "object",
             "required": [
@@ -3146,6 +3372,43 @@
                 "updated_at": {
                     "description": "最后更新时间戳",
                     "type": "integer"
+                }
+            }
+        },
+        "tables.Forward": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "description": "创建时间戳",
+                    "type": "integer"
+                },
+                "rd": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "roomid": {
+                    "description": "群聊 id",
+                    "type": "string"
+                },
+                "send_roomids": {
+                    "description": "转发到群聊id",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "状态：0:关闭，1:开启",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "消息类型",
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "description": "最后更新时间戳",
+                    "type": "integer"
+                },
+                "wxid": {
+                    "description": "监听人（如果为空，监听全部发言）",
+                    "type": "string"
                 }
             }
         },

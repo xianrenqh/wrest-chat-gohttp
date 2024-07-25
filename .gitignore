@@ -14,5 +14,6 @@ storage/chat-images/
 build/
 docs/
 logs/
+php-system/
 *.exe
 *.dll
