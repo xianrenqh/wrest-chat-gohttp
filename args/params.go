@@ -22,10 +22,12 @@ type IWcf struct {
 	MsgStore     bool   `yaml:"MsgStore"`     // 是否存储收到的消息
 	MsgStoreDays int    `yaml:"MsgStoreDays"` // 消息留存天数
 	WcfBinary    string `yaml:"WcfBinary"`    // 留空则不注入微信
+	WeChatAuto   bool   `yaml:"wechatAuto"`   // 是否自动启动微信
 }
 
 var Wcf = &IWcf{
-	Address: "127.0.0.1:7601",
+	Address:    "127.0.0.1:7601",
+	WeChatAuto: true,
 }
 
 // Web 服务

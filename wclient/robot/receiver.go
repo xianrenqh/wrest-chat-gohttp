@@ -1,6 +1,7 @@
 package robot
 
 import (
+	"fmt"
 	"github.com/opentdp/wrest-chat/dbase/chatroom"
 	"github.com/opentdp/wrest-chat/dbase/profile"
 	"github.com/opentdp/wrest-chat/dbase/setting"
@@ -12,6 +13,10 @@ func receiver(msg *wcferry.WxMsg) {
 	if whiteLimit(msg) {
 		return // 白名单限制
 	}
+
+	fmt.Println("++++++消息类型：")
+	fmt.Println(msg.Type)
+	fmt.Println("----------")
 
 	switch msg.Type {
 	case 1: //文字

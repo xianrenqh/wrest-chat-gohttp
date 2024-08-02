@@ -2,45 +2,46 @@ package cronjob
 
 import (
 	"github.com/opentdp/go-helper/dborm"
-
 	"github.com/opentdp/wrest-chat/dbase/tables"
 )
 
 // 创建计划
 
 type CreateParam struct {
-	Rd         uint   `json:"rd"`
-	Name       string `json:"name" binding:"required"`
-	Second     string `json:"second" binding:"required"`
-	Minute     string `json:"minute" binding:"required"`
-	Hour       string `json:"hour" binding:"required"`
-	DayOfMonth string `json:"day_of_month" binding:"required"`
-	Month      string `json:"month" binding:"required"`
-	DayOfWeek  string `json:"day_of_week" binding:"required"`
-	Type       string `json:"type" binding:"required"`
-	Timeout    uint   `json:"timeout" binding:"required"`
-	Directory  string `json:"directory" binding:"required"`
-	Content    string `json:"content" binding:"required"`
-	Deliver    string `json:"deliver"`
-	EntryId    int64  `json:"entry_id"`
+	Rd          uint   `json:"rd"`
+	Name        string `json:"name" binding:"required"`
+	Second      string `json:"second" binding:"required"`
+	Minute      string `json:"minute" binding:"required"`
+	Hour        string `json:"hour" binding:"required"`
+	DayOfMonth  string `json:"day_of_month" binding:"required"`
+	Month       string `json:"month" binding:"required"`
+	DayOfWeek   string `json:"day_of_week" binding:"required"`
+	Type        string `json:"type" binding:"required"`
+	Timeout     uint   `json:"timeout" binding:"required"`
+	Directory   string `json:"directory" binding:"required"`
+	Content     string `json:"content" binding:"required"`
+	Deliver     string `json:"deliver"`
+	DeliverType int8   `json:"deliver_type"`
+	EntryId     int64  `json:"entry_id"`
 }
 
 func Create(data *CreateParam) (uint, error) {
 
 	item := &tables.Cronjob{
-		Name:       data.Name,
-		Second:     data.Second,
-		Minute:     data.Minute,
-		Hour:       data.Hour,
-		DayOfMonth: data.DayOfMonth,
-		Month:      data.Month,
-		DayOfWeek:  data.DayOfWeek,
-		Type:       data.Type,
-		Timeout:    data.Timeout,
-		Directory:  data.Directory,
-		Content:    data.Content,
-		Deliver:    data.Deliver,
-		EntryId:    data.EntryId,
+		Name:        data.Name,
+		Second:      data.Second,
+		Minute:      data.Minute,
+		Hour:        data.Hour,
+		DayOfMonth:  data.DayOfMonth,
+		Month:       data.Month,
+		DayOfWeek:   data.DayOfWeek,
+		Type:        data.Type,
+		Timeout:     data.Timeout,
+		Directory:   data.Directory,
+		Content:     data.Content,
+		Deliver:     data.Deliver,
+		DeliverType: data.DeliverType,
+		EntryId:     data.EntryId,
 	}
 
 	result := dborm.Db.Create(item)
@@ -60,19 +61,20 @@ func Update(data *UpdateParam) error {
 			Rd: data.Rd,
 		}).
 		Updates(tables.Cronjob{
-			Name:       data.Name,
-			Second:     data.Second,
-			Minute:     data.Minute,
-			Hour:       data.Hour,
-			DayOfMonth: data.DayOfMonth,
-			Month:      data.Month,
-			DayOfWeek:  data.DayOfWeek,
-			Type:       data.Type,
-			Timeout:    data.Timeout,
-			Directory:  data.Directory,
-			Content:    data.Content,
-			Deliver:    data.Deliver,
-			EntryId:    data.EntryId,
+			Name:        data.Name,
+			Second:      data.Second,
+			Minute:      data.Minute,
+			Hour:        data.Hour,
+			DayOfMonth:  data.DayOfMonth,
+			Month:       data.Month,
+			DayOfWeek:   data.DayOfWeek,
+			Type:        data.Type,
+			Timeout:     data.Timeout,
+			Directory:   data.Directory,
+			Content:     data.Content,
+			Deliver:     data.Deliver,
+			DeliverType: data.DeliverType,
+			EntryId:     data.EntryId,
 		})
 
 	return result.Error

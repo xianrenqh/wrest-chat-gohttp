@@ -33,6 +33,8 @@ func Connect() {
 		&tables.Setting{},
 		&tables.Webhook{},
 		&tables.Forward{},
+		&tables.Point{},
+		&tables.PointList{},
 	)
 
 	// 开启外键约束

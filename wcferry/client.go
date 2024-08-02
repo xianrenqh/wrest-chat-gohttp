@@ -1,18 +1,25 @@
 package wcferry
 
 import (
+	"embed"
 	"errors"
-	"os/exec"
-	"strconv"
-	"time"
-
 	"github.com/opentdp/go-helper/filer"
 	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/go-helper/onquit"
+	"golang.org/x/sys/windows"
+	"os"
+	"os/exec"
+	"path"
+	"path/filepath"
+	"strconv"
+	"time"
 )
 
 const Wcf_Version = "39.0.145"
 const Wechat_Version = "3.9.2.23"
+
+//go:embed libs
+var libfs embed.FS
 
 type Client struct {
 	WcfBinary  string     // wcf.exe 路径
@@ -20,6 +27,10 @@ type Client struct {
 	ListenPort int        // wcf 监听端口
 	CmdClient  *CmdClient // 命令客户端
 	MsgClient  *MsgClient // 消息客户端
+
+	//这里调用sdk.dll库【库有问题】
+	sdkLibrary string // sdk.dll 路径
+	WeChatAuto bool   // 微信自动启停
 }
 
 // 启动 wcf 服务
@@ -79,8 +90,6 @@ func (c *Client) DisableReceiver(ks ...string) error {
 	return err
 }
 
-// 启动 wcf 服务
-// return error 错误信息
 func (c *Client) wxInitSDK() error {
 	if c.WcfBinary == "" {
 		return nil
@@ -109,4 +118,65 @@ func (c *Client) wxDestroySDK() error {
 	logman.Warn(c.WcfBinary + " stop")
 	cmd := exec.Command(c.WcfBinary, "stop")
 	return cmd.Run()
+}
+
+// 启动 wcf 服务
+// return error 错误信息
+func (c *Client) wxInitSDKBakNew() error {
+	// 尝试自动启动微信
+	/*if c.WeChatAuto {
+		out, _ := exec.Command("tasklist").Output()
+		if strings.Contains(string(out), "WeChat.exe") {
+			return errors.New("please close wechat")
+		}
+	}*/
+	// 释放 libs 并注入微信
+	tf, err := filer.ReleaseEmbedFS(libfs, "libs")
+	if err == nil {
+		c.sdkLibrary = path.Join(tf, "sdk.dll")
+		c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
+		time.Sleep(5 * time.Second)
+	}
+	return err
+}
+
+// 关闭 wcf 服务
+// return error 错误信息
+func (c *Client) wxDestroySDKBakNew() error {
+	// 关闭 wcf 服务
+	err := c.sdkCall("WxDestroySDK", uintptr(0))
+	logman.Warn("wcf destroyed", "error", err)
+	// 尝试自动关闭微信
+	/*if c.WeChatAuto {
+		logman.Info("killing wechat process")
+		cmd := exec.Command("taskkill", "/IM", "WeChat.exe", "/F")
+		if err := cmd.Run(); err != nil {
+			logman.Warn("failed to kill wechat", "error", err)
+			return err
+		}
+	}*/
+	// 尝试删除 libs 临时目录
+	os.RemoveAll(filepath.Dir(c.sdkLibrary))
+	return err
+}
+
+// 调用 sdk.dll 中的函数
+func (c *Client) sdkCall(fn string, a ...uintptr) error {
+	// 加载 sdk.dll
+	sdk, err := windows.LoadDLL(c.sdkLibrary)
+	if err != nil {
+		logman.Info("failed to load sdk.dll", "error", err)
+		return err
+	}
+	defer sdk.Release()
+	// 查找 fn 函数
+	proc, err := sdk.FindProc(fn)
+	if err != nil {
+		logman.Info("failed to call "+fn, "error", err)
+		return err
+	}
+	// 执行 fn(a...)
+	r1, r2, err := proc.Call(a...)
+	logman.Warn("call dll:"+fn, "r1", r1, "r2", r2, "error", err)
+	return err
 }

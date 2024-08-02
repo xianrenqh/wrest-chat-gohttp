@@ -45,6 +45,15 @@ func receiver10000Public(msg *wcferry.WxMsg) {
 		return
 	}
 
+	// 自动回应群聊拍一拍（私聊不支持）
+	if strings.Contains(msg.Content, "拍了拍我") {
+		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+		if room.PatReturn == "true" {
+			wc.CmdClient.SendPatMsg(msg.Roomid, msg.Sender)
+		}
+		return
+	}
+
 }
 
 func receiver10000Private(msg *wcferry.WxMsg) {

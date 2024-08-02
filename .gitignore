@@ -17,3 +17,6 @@ logs/
 php-system/
 *.exe
 *.dll
+
+plugin/cronjob/
+plugin/cronjob.txt

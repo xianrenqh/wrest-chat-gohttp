@@ -2,11 +2,10 @@ package crond
 
 import (
 	"errors"
-	"strings"
-
 	"github.com/opentdp/go-helper/command"
 	"github.com/opentdp/go-helper/logman"
 	"github.com/robfig/cron/v3"
+	"strings"
 
 	"github.com/opentdp/wrest-chat/dbase/cronjob"
 	"github.com/opentdp/wrest-chat/dbase/tables"

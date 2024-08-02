@@ -36,6 +36,7 @@ func Register() *wcferry.Client {
 		ListenAddr: host,
 		ListenPort: strutil.ToInt(port),
 		WcfBinary:  args.Wcf.WcfBinary,
+		WeChatAuto: args.Wcf.WeChatAuto,
 	}
 
 	// 初始化连接
