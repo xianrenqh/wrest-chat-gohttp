@@ -35,6 +35,9 @@ func Connect() {
 		&tables.Forward{},
 		&tables.Point{},
 		&tables.PointList{},
+		&tables.SystemCrontab{},
+		&tables.SystemCrontabLog{},
+		&tables.MpArticle{},
 	)
 
 	// 开启外键约束

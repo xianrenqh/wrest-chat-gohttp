@@ -33,6 +33,8 @@ var (
 	ApiEndpointIcon = "https://wrest.rehi.org/assets/icon.png"
 	// HELP 指令扩展内容
 	HelpAdditive = ""
+	// 抓取微信公众号文章开关
+	MpArticleEnable = true
 )
 
 // 从数据库加载配置
@@ -74,6 +76,8 @@ func Laod() {
 			ApiEndpointIcon = item.Value
 		case "HelpAdditive":
 			HelpAdditive = item.Value
+		case "MpArticleEnable":
+			MpArticleEnable = item.Value == "true"
 		}
 	}
 
@@ -98,6 +102,7 @@ func DataMigrate() {
 		{0, "ApiEndpoint", "string", "bot", ApiEndpoint, "API 指令网址", "/api 指令请求的后端网址"},
 		{0, "ApiEndpointIcon", "string", "bot", ApiEndpointIcon, "API 指令图标", "/api 卡片消息使用的图标"},
 		{0, "HelpAdditive", "text", "bot", HelpAdditive, "HELP 指令扩展", "/help 指令扩展内容，可添加自定义菜单等"},
+		{0, "MpArticleEnable", "bool", "bot", strconv.FormatBool(MpArticleEnable), "公众号文章开关", "是否抓取公众号最新文章"},
 	}
 
 	for _, item := range settings {

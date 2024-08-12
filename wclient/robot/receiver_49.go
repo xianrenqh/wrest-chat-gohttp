@@ -2,7 +2,9 @@ package robot
 
 import (
 	"encoding/xml"
-
+	"fmt"
+	"github.com/opentdp/wrest-chat/dbase/mparticle"
+	"github.com/opentdp/wrest-chat/dbase/setting"
 	"github.com/opentdp/wrest-chat/wcferry"
 	"github.com/opentdp/wrest-chat/wcferry/types"
 )
@@ -14,6 +16,35 @@ func receiver49(msg *wcferry.WxMsg) {
 	err := xml.Unmarshal([]byte(msg.Content), &ret)
 	if err != nil {
 		return
+	}
+
+	//公众号消息
+	if ret.AppMsg.Type == 5 && setting.BotEnable {
+		mpItems := ret.AppMsg.MmRreader.Category.Item
+		pubUsername := ret.AppMsg.MmRreader.Publisher.Username
+		pubNickname := ret.AppMsg.MmRreader.Publisher.Nickname
+
+		for _, item := range mpItems {
+			createParam := mparticle.CreateParam{
+				Title:    item.Title,
+				Desc:     item.Summary,
+				Url:      item.URL,
+				PubTime:  item.PubTime,
+				Cover:    item.Cover,
+				Digest:   item.Digest,
+				Username: pubUsername,
+				Appname:  pubNickname,
+			}
+
+			result, _ := mparticle.Create(&createParam)
+			if result == 0 {
+				fmt.Println("公众号文章错误：", item.Title, "Status Code：", result)
+				continue
+			}
+
+			fmt.Println("公众号文章添加成功:", item.Title)
+			continue
+		}
 	}
 
 	// 引用消息

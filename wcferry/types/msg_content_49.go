@@ -12,6 +12,23 @@ type MsgContent49 struct {
 		Type       int32     `xml:"type"`
 		URL        string    `xml:"url"`
 		WCPayInfo  WCPayInfo `xml:"wcpayinfo"` // 1,3
+		MmRreader  struct {  // 类型=5，公众号，start
+			Category struct {
+				Name string `xml:"name"`
+				Item []struct {
+					Title   string `xml:"title"`
+					URL     string `xml:"url"`
+					PubTime string `xml:"pub_time"`
+					Summary string `xml:"summary"`
+					Cover   string `xml:"cover"`
+					Digest  string `xml:"digest"`
+				} `xml:"item"`
+			} `xml:"category"`
+			Publisher struct {
+				Username string `xml:"username"`
+				Nickname string `xml:"nickname"`
+			} `xml:"publisher"`
+		} `xml:"mmreader"` // 类型=5，公众号，end
 	} `xml:"appmsg"`
 	CommentURL   string `xml:"commenturl"`
 	FromUsername string `xml:"fromusername"`

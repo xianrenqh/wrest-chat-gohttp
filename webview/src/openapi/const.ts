@@ -61,6 +61,8 @@ export const AiModels: Record<string, AiOptionData> = {
             'gpt-4': 'gpt-4',
             'gpt-4-32k': 'gpt-4-32k',
             'gpt-3.5-turbo': 'gpt-3.5-turbo',
+            'deepseek-chat': 'deepseek-chat',
+            'deepseek-coder': 'deepseek-coder',
         },
     },
     tencent: {
