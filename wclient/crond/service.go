@@ -3,8 +3,9 @@ package crond
 import (
 	"errors"
 	"github.com/opentdp/go-helper/command"
-	"github.com/opentdp/go-helper/logman"
 	"github.com/robfig/cron/v3"
+	"github.com/rs/zerolog/log"
+	"strconv"
 	"strings"
 
 	"github.com/opentdp/wrest-chat/dbase/cronjob"
@@ -15,12 +16,10 @@ import (
 )
 
 var crontab *cron.Cron
-var logger *logman.Logger
 
 func Daemon() {
 
-	logger = logman.Named("cronjob")
-	logger.Info("cron:daemon start")
+	log.Info().Msg("正在启用定时任务，请稍后...")
 
 	crontab = cron.New(cron.WithSeconds())
 
@@ -34,7 +33,7 @@ func Daemon() {
 	}
 
 	crontab.Start()
-
+	log.Info().Msg("定时任务启用成功，请稍后...")
 }
 
 // 触发计划任务
@@ -50,7 +49,9 @@ func Execute(id uint) error {
 		return errors.New("deliver is empty")
 	}
 
-	logger.Info("cron:run "+job.Name, "entryId", job.EntryId)
+	log.Info().Msg("cron:run " + job.Name)
+	// 如果需要记录额外的信息，可以使用如下方式
+	log.Info().Str("message", "cron:run "+job.Name).Str("entryId", strconv.FormatInt(job.EntryId, 10)).Send()
 
 	// 发送文本内容
 	if job.Type == "TEXT" {
@@ -61,8 +62,7 @@ func Execute(id uint) error {
 	if job.Type == "AI" {
 		wc := wclient.Register()
 		if wc == nil {
-			logger.Error("cron:ai", "error", "wclient is nil")
-			return errors.New("wclient is nil")
+			log.Error().Msg("cron:ai出错。wclient is nil")
 		}
 		self := wc.CmdClient.GetSelfInfo()
 		data := aichat.Text(job.Content, self.Wxid, "")
@@ -78,12 +78,12 @@ func Execute(id uint) error {
 		Timeout:       job.Timeout,
 	})
 	if err != nil {
-		logger.Warn("cron:run "+job.Name, "error", err)
+		log.Warn().Msg("任务运行错误：" + job.Name)
 		return err
 	}
 
 	// 发送命令执行结果
-	logger.Warn("cron:run "+job.Name, "output", output)
+	log.Warn().Msg("cron:run " + job.Name)
 	if output != "" {
 		return deliver.Send(job.Deliver, output)
 	}
@@ -109,7 +109,7 @@ func AttachJob(job *tables.Cronjob) error {
 		return err
 	}
 
-	logger.Info("cron:attach "+job.Name, "entryId", entryId)
+	log.Info().Msg("任务名称： " + job.Name + " " + string(entryId))
 	err = cronjob.Update(&cronjob.UpdateParam{
 		Rd:      job.Rd,
 		EntryId: int64(entryId),
@@ -136,7 +136,7 @@ func UndoById(rd uint) {
 	job, err := cronjob.Fetch(&cronjob.FetchParam{Rd: rd})
 
 	if err == nil && job.Rd > 0 {
-		logger.Info("cron:remove "+job.Name, "entryId", job.EntryId)
+		log.Info().Msg("cron:remove " + job.Name + string(job.EntryId))
 		crontab.Remove(cron.EntryID(job.EntryId))
 	}
 
@@ -147,7 +147,7 @@ func RedoById(rd uint) {
 	job, err := cronjob.Fetch(&cronjob.FetchParam{Rd: rd})
 
 	if err == nil && job.Rd > 0 {
-		logger.Info("cron:update "+job.Name, "entryId", job.EntryId)
+		log.Info().Msg("cron:update " + job.Name + string(job.EntryId))
 		crontab.Remove(cron.EntryID(job.EntryId))
 		AttachJob(job)
 	}

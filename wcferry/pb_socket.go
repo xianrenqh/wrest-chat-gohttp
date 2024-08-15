@@ -6,13 +6,12 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/rs/zerolog/log"
 	"go.nanomsg.org/mangos/v3"
 	"go.nanomsg.org/mangos/v3/protocol"
 	"go.nanomsg.org/mangos/v3/protocol/pair1"
 	"go.nanomsg.org/mangos/v3/transport/all"
 	"google.golang.org/protobuf/proto"
-
-	"github.com/opentdp/go-helper/logman"
 )
 
 type pbSocket struct {
@@ -46,7 +45,7 @@ func (c *pbSocket) init(d uint) (err error) {
 	}
 	c.socket.SetOption(mangos.OptionMaxRecvSize, 16*1024*1024)
 	// 连接服务器
-	logman.Warn("pbSocket dial", "server", c.server)
+	log.Info().Str("server", c.server).Msg("pbSocket连接中...")
 	return c.socket.Dial(c.server)
 }
 
@@ -55,11 +54,11 @@ func (c *pbSocket) init(d uint) (err error) {
 // return *Response 响应参数
 func (c *pbSocket) call(req *Request) *Response {
 	if err := c.send(req); err != nil {
-		logman.Error(err.Error())
+		log.Error().Msg(err.Error())
 		return &Response{}
 	}
 	if resp, err := c.recv(); err != nil {
-		logman.Error(err.Error())
+		log.Error().Msg(err.Error())
 		return &Response{}
 	} else {
 		return resp

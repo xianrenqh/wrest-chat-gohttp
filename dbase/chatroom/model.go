@@ -112,14 +112,15 @@ func Fetch(data *FetchParam) (*tables.Chatroom, error) {
 			Rd:     data.Rd,
 			Roomid: data.Roomid,
 		}).
-		First(&item)
+		Find(&item)
 
+	if result.Error != nil {
+		return nil, result.Error
+	}
 	if item == nil {
 		item = &tables.Chatroom{Roomid: data.Roomid}
 	}
-
-	return item, result.Error
-
+	return item, nil
 }
 
 // 删除群聊

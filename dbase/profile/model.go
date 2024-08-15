@@ -100,13 +100,15 @@ func Fetch(data *FetchParam) (*tables.Profile, error) {
 			Wxid:   data.Wxid,
 			Roomid: data.Roomid,
 		}).
-		First(&item)
+		Find(&item)
 
+	if result.Error != nil {
+		return nil, result.Error
+	}
 	if item == nil {
 		item = &tables.Profile{Wxid: data.Wxid, Roomid: data.Roomid}
 	}
-
-	return item, result.Error
+	return item, nil
 
 }
 

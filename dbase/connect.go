@@ -3,14 +3,14 @@ package dbase
 import (
 	"github.com/opentdp/go-helper/dborm"
 	"github.com/opentdp/go-helper/filer"
-
 	"github.com/opentdp/wrest-chat/args"
 	"github.com/opentdp/wrest-chat/dbase/setting"
 	"github.com/opentdp/wrest-chat/dbase/tables"
+	"github.com/rs/zerolog/log"
 )
 
 func Connect() {
-
+	log.Info().Msg("正在连接数据库，请稍后...")
 	dbname := "wrest.db3"
 	if !filer.Exists(dbname) {
 		dbname = args.Web.Storage + "/" + dbname
@@ -18,7 +18,8 @@ func Connect() {
 
 	// 连接数据库
 	db := dborm.Connect(&dborm.Config{
-		Type: "sqlite", DbName: dbname,
+		Type:   "sqlite",
+		DbName: dbname,
 	})
 
 	// 实施自动迁移
@@ -46,5 +47,5 @@ func Connect() {
 	// 加载全局配置
 	setting.DataMigrate()
 	setting.Laod()
-
+	log.Info().Msg("数据库连接成功")
 }

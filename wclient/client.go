@@ -6,9 +6,9 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/go-helper/request"
 	"github.com/opentdp/go-helper/strutil"
+	"github.com/rs/zerolog/log"
 
 	"github.com/opentdp/wrest-chat/args"
 	"github.com/opentdp/wrest-chat/dbase/message"
@@ -28,7 +28,7 @@ func Register() *wcferry.Client {
 	// 检查参数
 	host, port, err := net.SplitHostPort(args.Wcf.Address)
 	if err != nil {
-		logman.Fatal("invalid address", "error", err)
+		log.Error().Err(err).Msg("invalid address")
 	}
 
 	// 创建客户端
@@ -40,9 +40,9 @@ func Register() *wcferry.Client {
 	}
 
 	// 初始化连接
-	logman.Warn("wcf starting ...")
+	log.Info().Msg("wcf正在启动 ...")
 	if err := wc.Connect(); err != nil {
-		logman.Fatal("wcf start failed", "error", err)
+		log.Error().Err(err).Msg("wcf启动失败！")
 	}
 
 	// 打印收到的消息
@@ -123,7 +123,7 @@ func ApiRequestMsg(url, wxid, roomid string) int32 {
 
 	// 验证参数
 	if self == nil {
-		logman.Error("ApiRequestMsg::GetSelfInfo failed")
+		log.Error().Msg("ApiRequestMsg::GetSelfInfo failed")
 		return -1
 	}
 

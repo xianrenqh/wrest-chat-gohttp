@@ -12,6 +12,7 @@ require (
 	github.com/opentdp/go-helper v0.7.2
 	github.com/rehiy/one-llm v0.3.1-0.20240417125530-aa8fc354d906
 	github.com/robfig/cron/v3 v3.0.1
+	github.com/rs/zerolog v1.33.0
 	go.nanomsg.org/mangos/v3 v3.4.2
 	golang.org/x/sys v0.22.0
 	google.golang.org/protobuf v1.34.2

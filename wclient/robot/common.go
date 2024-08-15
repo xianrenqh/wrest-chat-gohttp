@@ -3,31 +3,32 @@ package robot
 import (
 	"strings"
 
-	"github.com/opentdp/go-helper/logman"
-
 	"github.com/opentdp/wrest-chat/dbase/setting"
 	"github.com/opentdp/wrest-chat/wcferry"
 	"github.com/opentdp/wrest-chat/wclient"
+	"github.com/rs/zerolog/log"
 )
 
 var wc *wcferry.Client
 
 func Start() {
 
+	log.Info().Msg("正在初始化Robot服务中。。")
+
 	if !setting.BotEnable {
-		logman.Warn("robot disabled")
+		log.Warn().Msg("Robot已关闭")
 		return
 	}
 
 	if wc != nil {
-		logman.Warn("robot already started")
+		log.Info().Msg("Robot重启成功")
 		return
 	}
 
 	wc = wclient.Register()
 	_, err := wc.EnrollReceiver(true, receiver)
 	if err != nil {
-		logman.Fatal("robot start failed", "error", err)
+		log.Error().Err(err).Msg("Robot启动失败")
 	}
 
 	ResetHandlers()

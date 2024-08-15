@@ -53,26 +53,26 @@ func Update(data *UpdateParam) error {
 type FetchParam struct {
 	Rd     uint   `json:"rd"`
 	Roomid string `json:"roomid"`
-	Type   int32  `json:"type"`
+	Status int32  `json:"status"`
 }
 
 func Fetch(data *FetchParam) (*tables.Forward, error) {
-
 	var item *tables.Forward
 
 	result := dborm.Db.
 		Where(&tables.Forward{
-			Rd:     data.Rd,
 			Roomid: data.Roomid,
+			Status: data.Status,
 		}).
-		First(&item)
+		Find(&item)
 
+	if result.Error != nil {
+		return nil, result.Error
+	}
 	if item == nil {
 		item = &tables.Forward{Roomid: data.Roomid}
 	}
-
-	return item, result.Error
-
+	return item, nil
 }
 
 // 删除消息转发
@@ -113,16 +113,13 @@ func FetchAll(data *FetchAllParam) ([]*tables.Forward, error) {
 type CountParam = FetchAllParam
 
 func Count(data *CountParam) (int64, error) {
-
 	var count int64
 
 	result := dborm.Db.
 		Model(&tables.Forward{}).
-		Where(&tables.Forward{
-			Type: data.Type,
-		}).
+		Where("send_roomids != ?", "").
+		Where("status = ?", 1).
 		Count(&count)
 
 	return count, result.Error
-
 }

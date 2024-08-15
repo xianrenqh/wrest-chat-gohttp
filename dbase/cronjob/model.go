@@ -9,6 +9,7 @@ import (
 
 type CreateParam struct {
 	Rd          uint   `json:"rd"`
+	Salt        string `json:"salt" binding:"required"`
 	Name        string `json:"name" binding:"required"`
 	Second      string `json:"second" binding:"required"`
 	Minute      string `json:"minute" binding:"required"`
@@ -28,6 +29,7 @@ type CreateParam struct {
 func Create(data *CreateParam) (uint, error) {
 
 	item := &tables.Cronjob{
+		Salt:        data.Salt,
 		Name:        data.Name,
 		Second:      data.Second,
 		Minute:      data.Minute,

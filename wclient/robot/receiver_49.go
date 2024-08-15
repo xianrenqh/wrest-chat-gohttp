@@ -2,11 +2,12 @@ package robot
 
 import (
 	"encoding/xml"
-	"fmt"
 	"github.com/opentdp/wrest-chat/dbase/mparticle"
 	"github.com/opentdp/wrest-chat/dbase/setting"
 	"github.com/opentdp/wrest-chat/wcferry"
 	"github.com/opentdp/wrest-chat/wcferry/types"
+	"github.com/rs/zerolog/log"
+	"strconv"
 )
 
 // 处理混合类消息
@@ -19,7 +20,7 @@ func receiver49(msg *wcferry.WxMsg) {
 	}
 
 	//公众号消息
-	if ret.AppMsg.Type == 5 && setting.BotEnable {
+	if ret.AppMsg.Type == 5 && setting.MpArticleEnable {
 		mpItems := ret.AppMsg.MmRreader.Category.Item
 		pubUsername := ret.AppMsg.MmRreader.Publisher.Username
 		pubNickname := ret.AppMsg.MmRreader.Publisher.Nickname
@@ -38,11 +39,11 @@ func receiver49(msg *wcferry.WxMsg) {
 
 			result, _ := mparticle.Create(&createParam)
 			if result == 0 {
-				fmt.Println("公众号文章错误：", item.Title, "Status Code：", result)
+				log.Info().Str("Status Code：", strconv.Itoa(int(result))).Msg("公众号文章错误：" + item.Title)
 				continue
 			}
 
-			fmt.Println("公众号文章添加成功:", item.Title)
+			log.Info().Msg("公众号文章添加成功：" + item.Title)
 			continue
 		}
 	}

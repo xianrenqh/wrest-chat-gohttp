@@ -43,6 +43,9 @@ export const AiModels: Record<string, AiOptionData> = {
         models: {
             'completions_pro': 'ERNIE 4.0',
             'completions': 'ERNIE-3.5-8K',
+            'ernie-speed-128k': 'ERNIE-Speed-128K',
+            'ernie_speed': 'ERNIE-Speed-8K',
+            'ernie-lite-8k': 'ERNIE-Lite-8K',
         },
     },
     google: {
@@ -76,6 +79,7 @@ export const AiModels: Record<string, AiOptionData> = {
         endpoint: 'wss://spark-api.xf-yun.com',
         keystyle: '密钥格式 APP-ID,API-KEY,API-SECRET',
         models: {
+            'v4.0': '星火 v4.0 Ultra',
             'v3.5': '星火 v3.5',
             'v3': '星火 v3',
         },

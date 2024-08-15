@@ -1,11 +1,10 @@
 package wcfrest
 
 import (
-	"sync"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"github.com/opentdp/go-helper/logman"
+	"github.com/rs/zerolog/log"
+	"sync"
 
 	"github.com/opentdp/wrest-chat/wcferry"
 )
@@ -31,17 +30,18 @@ func (wc *Controller) socketReceiver(c *gin.Context) {
 
 	ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		logman.Error("websocket upgrade", "error", err)
+		log.Error().Err(err).Msg("websocket upgrade")
 		c.Set("Error", err)
 		return
 	}
 
 	defer ws.Close()
 
-	logman.Warn("enable receiver", "socket", ws.RemoteAddr())
+	remoteArr := ws.RemoteAddr()
+	log.Info().Str("socket", remoteArr.String()).Msg("消息推送器已开启")
 	key, err := wc.EnrollReceiver(true, socketReceiver(ws))
 	if err != nil {
-		logman.Error("enroll receiver", "error", err)
+		log.Error().Err(err).Msg("消息推送器注册失败：socket")
 		c.Set("Error", err)
 		return
 	}

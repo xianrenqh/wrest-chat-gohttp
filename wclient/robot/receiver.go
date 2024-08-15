@@ -2,6 +2,7 @@ package robot
 
 import (
 	"github.com/opentdp/wrest-chat/dbase/chatroom"
+	"github.com/opentdp/wrest-chat/dbase/forward"
 	"github.com/opentdp/wrest-chat/dbase/profile"
 	"github.com/opentdp/wrest-chat/dbase/setting"
 	"github.com/opentdp/wrest-chat/wcferry"
@@ -30,6 +31,14 @@ func receiver(msg *wcferry.WxMsg) {
 		receiver10002(msg)
 	}
 
+	// 群转发消息
+	count, err := forward.Count(&forward.CountParam{})
+	if err != nil {
+		return
+	}
+	if count > 0 {
+		forwardMsgData(msg)
+	}
 }
 
 // 复制消息
@@ -55,7 +64,6 @@ func copyMsg(msg *wcferry.WxMsg) *wcferry.WxMsg {
 // 白名单限制
 // return 验证结果 [true 受限, false 忽略]
 func whiteLimit(msg *wcferry.WxMsg) bool {
-
 	// 无需验证
 	if !setting.WhiteLimit1 && !setting.WhiteLimit2 {
 		return false

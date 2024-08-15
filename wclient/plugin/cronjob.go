@@ -2,11 +2,13 @@ package plugin
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/opentdp/go-helper/filer"
 	"github.com/opentdp/go-helper/logman"
@@ -80,7 +82,7 @@ func CronjobPluginParser(fp string) (*cronjob.CreateParam, error) {
 	}
 
 	// 提取插件参数
-	re := regexp.MustCompile(`(?m)^(//|::|#)\s*@(Name|Second|Minute|Hour|DayOfMonth|Month|DayOfWeek|Timeout|Content|Deliver):\s*(.*)$`)
+	re := regexp.MustCompile(`(?m)^(//|::|#)\s*@(Salt|Name|Second|Minute|Hour|DayOfMonth|Month|DayOfWeek|Timeout|Content|Deliver):\s*(.*)$`)
 	matches := re.FindAllStringSubmatch(string(content), -1)
 	if matches == nil {
 		return nil, fmt.Errorf("cronjob config not found")
@@ -91,6 +93,19 @@ func CronjobPluginParser(fp string) (*cronjob.CreateParam, error) {
 	for _, match := range matches {
 		match[3] = strings.TrimSpace(match[3])
 		switch match[2] {
+		case "Salt":
+			if match[3] != "*" {
+				plugin.Salt = match[3]
+			} else {
+				const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+				rand.Seed(time.Now().UnixNano())
+				b := make([]byte, 6)
+				for i := range b {
+					b[i] = charset[rand.Intn(len(charset))]
+				}
+				randomSalt := string(b)
+				plugin.Salt = randomSalt
+			}
 		case "Name":
 			plugin.Name = match[3]
 		case "Second":

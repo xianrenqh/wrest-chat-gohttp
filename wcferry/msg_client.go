@@ -1,10 +1,9 @@
 package wcferry
 
 import (
-	"sync"
-
-	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/go-helper/strutil"
+	"github.com/rs/zerolog/log"
+	"sync"
 )
 
 type MsgClient struct {
@@ -44,7 +43,7 @@ func (c *MsgClient) Register(cb MsgConsumer) (string, error) {
 	k := strutil.Rand(16)
 	if c.consumer == nil {
 		if err := c.init(0); err != nil {
-			logman.Error("msg consumer", "error", err)
+			log.Error().Err(err).Msg("消息消费者错误...")
 			return "", err
 		}
 		c.consumer = MapConsumer{k: cb}
@@ -66,9 +65,9 @@ func (c *MsgClient) runner() {
 				go f(msg) // 异步推送
 			}
 		} else {
-			logman.Error("msg consumer", "error", err)
+			log.Error().Err(err).Msg("消息消费者错误...")
 		}
 	}
 	// 连接断开
-	logman.Warn("msg consumer stopped")
+	log.Error().Msg("消息接收器已停止服务...")
 }

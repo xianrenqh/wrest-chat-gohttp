@@ -4,8 +4,8 @@ import (
 	"embed"
 	"errors"
 	"github.com/opentdp/go-helper/filer"
-	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/go-helper/onquit"
+	"github.com/rs/zerolog/log"
 	"golang.org/x/sys/windows"
 	"os"
 	"os/exec"
@@ -36,6 +36,7 @@ type Client struct {
 // 启动 wcf 服务
 // return error 错误信息
 func (c *Client) Connect() error {
+	log.Info().Msg("正在初始化Robot服务中，请稍后...")
 	if c.ListenAddr == "" {
 		c.ListenAddr = "127.0.0.1"
 	}
@@ -53,6 +54,7 @@ func (c *Client) Connect() error {
 	if err := c.wxInitSDK(); err != nil {
 		return err
 	}
+	log.Info().Msg("wcf服务启动成功...")
 	// 自动注销 wcf
 	onquit.Register(func() {
 		c.CmdClient.Destroy()
@@ -103,7 +105,7 @@ func (c *Client) wxInitSDK() error {
 	}
 	// 打开 wcf 服务程序
 	port := strconv.Itoa(c.ListenPort)
-	logman.Warn(c.WcfBinary + " start " + port)
+	log.Warn().Msg(c.WcfBinary + " start " + port)
 	cmd := exec.Command(c.WcfBinary, "start", port)
 	return cmd.Run()
 }
@@ -115,7 +117,7 @@ func (c *Client) wxDestroySDK() error {
 		return nil
 	}
 	// 关闭 wcf 服务
-	logman.Warn(c.WcfBinary + " stop")
+	log.Warn().Msg(c.WcfBinary + " 已停止")
 	cmd := exec.Command(c.WcfBinary, "stop")
 	return cmd.Run()
 }
@@ -145,7 +147,7 @@ func (c *Client) wxInitSDKBakNew() error {
 func (c *Client) wxDestroySDKBakNew() error {
 	// 关闭 wcf 服务
 	err := c.sdkCall("WxDestroySDK", uintptr(0))
-	logman.Warn("wcf destroyed", "error", err)
+	log.Warn().Msg("wcf服务已被关闭")
 	// 尝试自动关闭微信
 	/*if c.WeChatAuto {
 		logman.Info("killing wechat process")
@@ -165,18 +167,18 @@ func (c *Client) sdkCall(fn string, a ...uintptr) error {
 	// 加载 sdk.dll
 	sdk, err := windows.LoadDLL(c.sdkLibrary)
 	if err != nil {
-		logman.Info("failed to load sdk.dll", "error", err)
+		log.Error().Msg("sdk.dll文件加载失败")
 		return err
 	}
 	defer sdk.Release()
 	// 查找 fn 函数
 	proc, err := sdk.FindProc(fn)
 	if err != nil {
-		logman.Info("failed to call "+fn, "error", err)
+		log.Error().Str("function", "fn").Err(err).Msg("failed to call")
 		return err
 	}
 	// 执行 fn(a...)
 	r1, r2, err := proc.Call(a...)
-	logman.Warn("call dll:"+fn, "r1", r1, "r2", r2, "error", err)
+	log.Warn().Str("function", fn).Int("r1", int(r1)).Str("r2", strconv.Itoa(int(r2))).Err(err).Msg("call dll")
 	return err
 }
