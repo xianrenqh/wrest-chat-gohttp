@@ -28,6 +28,23 @@ fork地址：
 - 尽可能将消息中的 Xml 转为 Object，便于前端解析
 - 支持计划任务、外部指令、指令插件等扩展功能，详见 [wrest-plugin](https://github.com/opentdp/wrest-plugin)
 
+## 食用方法
+### 运行：
+```shell
+go mod tidy
+go run main.go
+```
+
+### 打包：
+```shell
+go build main.go
+```
+或者 双击 build.bat
+
+默认微信版本：
+3.9.2.23
+
+
 ## 代码提交
 
 提交代码时请使用 `feat: something` 作为说明，支持的标识如下
