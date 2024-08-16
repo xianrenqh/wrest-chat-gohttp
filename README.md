@@ -59,13 +59,7 @@ go build main.go
 - `chore` 构建过程或辅助工具的变动
 - `revert` 还原以前的提交
 
-## 免责声明
-
-[WrestChat](https://github.com/opentdp/wrest-chat) 和 [WeChatFerry](https://github.com/lich0821/WeChatFerry)
-是供学习交流的开源项目，代码及其制品仅供参考，不保证质量，不构成任何商业承诺或担保，不得用于商业或非法用途，使用者自行承担后果。
-
 ## 其他
-
 目前使用的是exe调用方式（旧版本）。dll调用方式（新版本）有部分功能没法使用，暂时关闭。
 
 如果使用dll方式调用，请修改：
@@ -75,6 +69,13 @@ go build main.go
 1. 大概第38行，注释掉。
 2. dll文件请放到：/wclient/libs/文件夹下
 3. 微信版本使用：39.10.27
+
+
+## 免责声明
+
+[WrestChatGoHttp](https://github.com/xianrenqh/wrest-chat-gohttp) 、[WrestChat](https://github.com/opentdp/wrest-chat) 和 [WeChatFerry](https://github.com/lich0821/WeChatFerry)
+是供学习交流的开源项目，代码及其制品仅供参考，不保证质量，不构成任何商业承诺或担保，不得用于商业或非法用途，使用者自行承担后果。
+
 
 License [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.txt)
 
