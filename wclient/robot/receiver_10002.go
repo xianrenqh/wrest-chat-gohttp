@@ -2,14 +2,15 @@ package robot
 
 import (
 	"encoding/xml"
-	"strconv"
-	"strings"
-
 	"github.com/opentdp/wrest-chat/dbase/chatroom"
 	"github.com/opentdp/wrest-chat/dbase/message"
+	"github.com/opentdp/wrest-chat/dbase/profile"
 	"github.com/opentdp/wrest-chat/dbase/setting"
 	"github.com/opentdp/wrest-chat/wcferry"
 	"github.com/opentdp/wrest-chat/wcferry/types"
+	"strconv"
+	"strings"
+	"time"
 )
 
 // 处理撤回消息
@@ -37,6 +38,18 @@ func receiver10002(msg *wcferry.WxMsg) {
 	// 防撤回提示已关闭
 	if len(output) < 2 {
 		return
+	}
+
+	if msg.IsGroup {
+		// 如果此条消息发送人已被禁言，则不展示撤回提示
+		up, err := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
+		if err != nil {
+			return
+		}
+		currentTime := time.Now().Unix()
+		if up.BanExpire > currentTime {
+			return
+		}
 	}
 
 	// 解析已撤回的消息

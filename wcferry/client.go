@@ -103,6 +103,7 @@ func (c *Client) wxInitSDK() error {
 		}
 		c.WcfBinary = "wcferry/" + c.WcfBinary
 	}
+
 	// 打开 wcf 服务程序
 	port := strconv.Itoa(c.ListenPort)
 	log.Warn().Msg(c.WcfBinary + " start " + port)
