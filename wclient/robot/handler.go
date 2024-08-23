@@ -48,6 +48,9 @@ func ResetHandlers() {
 	hlst = append(hlst, roomHandler()...)
 	hlst = append(hlst, topHandler()...)
 	hlst = append(hlst, webhookHandler()...)
+	hlst = append(hlst, signInHandler()...)
+	hlst = append(hlst, addManagerHandler()...)
+	hlst = append(hlst, girlPicHandler()...)
 
 	// 指令列表排序
 	sort.Slice(hlst, func(i, j int) bool {

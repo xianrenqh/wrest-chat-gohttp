@@ -6,10 +6,10 @@ import (
 )
 
 type CreateParam struct {
-	Rd     uint   `json:"rd" gorm:"primaryKey;comment:'主键'"`         // 主键
-	Roomid string `json:"roomid" gorm:"uniqueIndex;comment:'群聊 id'"` // 群聊 id
-	Wxid   string `json:"wxid" gorm:"comment:'微信用户id'"`              // 微信用户id
-	Point  int32  `json:"point" gorm:"comment:'积分'"`                 // 积分
+	Rd     uint   `json:"rd" gorm:"primaryKey;comment:'主键'"`   // 主键
+	Roomid string `json:"roomid" gorm:"index;comment:'群聊 id'"` // 群聊 id
+	Wxid   string `json:"wxid" gorm:"index;comment:'微信用户id'"`  // 微信用户id
+	Point  int32  `json:"point" gorm:"comment:'积分'"`           // 积分
 }
 
 func Create(data *CreateParam) (uint, error) {
@@ -25,19 +25,23 @@ func Create(data *CreateParam) (uint, error) {
 }
 
 // 更新积分
-type UpdateParam = CreateParam
+type UpdateParam struct {
+	Rd     uint   `json:"rd" gorm:"primaryKey;comment:'主键'"`   // 主键
+	Roomid string `json:"roomid" gorm:"index;comment:'群聊 id'"` // 群聊 id
+	Wxid   string `json:"wxid" gorm:"index;comment:'微信用户id'"`  // 微信用户id
+	Point  int32  `json:"point" gorm:"comment:'积分'"`           // 积分
+}
 
 func Update(data *UpdateParam) error {
 	result := dborm.Db.
 		Where(&tables.Point{
 			Rd: data.Rd,
 		}).
-		Updates(tables.Point{
+		Updates(&tables.Point{
 			Roomid: data.Roomid,
 			Wxid:   data.Wxid,
 			Point:  data.Point,
 		})
-
 	return result.Error
 }
 
@@ -45,6 +49,7 @@ func Update(data *UpdateParam) error {
 
 type FetchParam struct {
 	Rd     uint   `json:"rd"`
+	Wxid   string `json:"wxid"`
 	Roomid string `json:"roomid"`
 }
 
@@ -55,15 +60,20 @@ func Fetch(data *FetchParam) (*tables.Point, error) {
 	result := dborm.Db.
 		Where(&tables.Point{
 			Rd:     data.Rd,
+			Wxid:   data.Wxid,
 			Roomid: data.Roomid,
 		}).
-		First(&item)
+		Find(&item)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
 
 	if item == nil {
 		item = &tables.Point{Roomid: data.Roomid}
 	}
 
-	return item, result.Error
+	return item, nil
 
 }
 

@@ -95,13 +95,17 @@ func Fetch(data *FetchParam) (*tables.Contact, error) {
 		Where(&tables.Contact{
 			Wxid: data.Wxid,
 		}).
-		First(&item)
+		Find(&item)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
 
 	if item == nil {
 		item = &tables.Contact{Wxid: data.Wxid}
 	}
 
-	return item, result.Error
+	return item, nil
 
 }
 

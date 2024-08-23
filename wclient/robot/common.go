@@ -1,6 +1,7 @@
 package robot
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/opentdp/wrest-chat/dbase/setting"
@@ -29,6 +30,18 @@ func Start() {
 	_, err := wc.EnrollReceiver(true, receiver)
 	if err != nil {
 		log.Error().Err(err).Msg("Robot启动失败")
+	}
+
+	isLogin := wc.CmdClient.IsLogin()
+	if isLogin {
+		wxInfo := wc.CmdClient.GetSelfInfo()
+		// 显示登录的微信信息
+		fmt.Printf("\n")
+		fmt.Printf("            ========== HuiRobot V1.0 ==========\n")
+		fmt.Printf("            微信名：%s \n", wxInfo.Name)
+		fmt.Printf("            微信ID：%s \n", wxInfo.Wxid)
+		fmt.Printf("            手机号：%s \n", wxInfo.Mobile)
+		fmt.Printf("            ========== HuiRobot V1.0 ==========\n\n")
 	}
 
 	ResetHandlers()

@@ -11,9 +11,12 @@ import (
 var Configer *Config
 
 type ConfigData struct {
-	Log *ILog `yaml:"Log"` // 日志
-	Wcf *IWcf `yaml:"Wcf"` // Wcf 服务
-	Web *IWeb `yaml:"Web"` // Web 服务
+	Log             *ILog             `yaml:"Log"`             // 日志
+	Wcf             *IWcf             `yaml:"Wcf"`             // Wcf 服务
+	Web             *IWeb             `yaml:"Web"`             // Web 服务
+	Others          *IOthers          `yaml:"Others"`          // 其他配置
+	FunctionKeyWord *IFunctionKeyWord `yaml:"FunctionKeyWord"` //
+	ApiServer       *IApiServer       `yaml:"ApiServer"`       //
 }
 
 func init() {
@@ -32,7 +35,7 @@ func init() {
 
 	Configer = &Config{
 		File: "config.yml",
-		Data: &ConfigData{Log, Wcf, Web},
+		Data: &ConfigData{Log, Wcf, Web, Others, FunctionKeyWord, ApiServer},
 	}
 
 	if len(os.Args) > 1 {

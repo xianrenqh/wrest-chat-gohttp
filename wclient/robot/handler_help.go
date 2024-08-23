@@ -21,7 +21,7 @@ func helpHandler() []*Handler {
 		Order:    900,
 		Roomid:   "*",
 		Command:  "/help",
-		Describe: "查看帮助信息",
+		Describe: "查看菜单信息",
 		Callback: helpCallback,
 	})
 
@@ -79,7 +79,8 @@ func helpCallback(msg *wcferry.WxMsg) string {
 	}
 
 	// 数组转为字符串
-	text := strings.Join(helper, "\n") + "\n"
+	text := "🌈 个性插件功能指南 🌈\n\n"
+	text += strings.Join(helper, "\n") + "\n"
 
 	// 自定义帮助信息
 	if len(setting.HelpAdditive) > 1 {

@@ -45,3 +45,31 @@ var Web = &IWeb{
 	Storage: "storage",
 	Swagger: true,
 }
+
+type IOthers struct {
+	SignInPoint int32 `yaml:"SignInPoint"`
+	PicPoint    int32 `yaml:"PicPoint"`
+	VideoPoint  int32 `yaml:"VideoPoint"`
+}
+
+var Others = &IOthers{
+	SignInPoint: 10,
+	PicPoint:    1,
+	VideoPoint:  2,
+}
+
+type IFunctionKeyWord struct {
+	VideoWord []string `yaml:"videoWord"`
+	FishWord  []string `yaml:"fishWord"`
+	KfcWord   []string `yaml:"kfcWord"`
+	DogWord   []string `yaml:"dogWord"`
+}
+
+var FunctionKeyWord = &IFunctionKeyWord{}
+
+type IApiServer struct {
+	FishApi string   `yaml:"fishApi"`
+	PicApi  []string `yaml:"picApi"`
+}
+
+var ApiServer = &IApiServer{}

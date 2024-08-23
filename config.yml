@@ -19,3 +19,47 @@ Web:
   Storage: storage # 附件存储路径，非必要不修改
   Swagger: true # 是否启用内置接口文档和调试工具
   Token: "123456" # 使用 Token 验证请求，留空则不验证
+
+
+# 其他配置
+Others:
+  SignInPoint: 10 # 签到积分
+  PicPoint: 1 # 获取图片积分
+  VideoPoint: 2 # 获取视频积分
+
+## 其它功能关键词配置
+FunctionKeyWord:
+  # 触发美女视频关键词
+  videoWord:
+    - '视频'
+    - '美女视频'
+    - '成人视频'
+    - '18禁'
+  # 触发摸鱼日记关键词
+  fishWord:
+    - '摸鱼日记'
+    - '摸鱼日历'
+  # 触发疯狂星期四文案关键词
+  kfcWord:
+    - 'Kfc'
+    - '疯狂星期四'
+    - '星期四'
+    - '今天星期四'
+    - 'KFC'
+    - 'kfc'
+    - 'v我50'
+    - '明天星期四'
+  # 触发舔狗日记关键词
+  dogWord:
+    - '舔狗日记'
+    - '舔我'
+
+ApiServer:
+  # 摸鱼日记API
+  fishApi: 'https://api.j4u.ink/v1/store/redirect/moyu/calendar/today.png'
+  # 美女图片接口API
+  picApi:
+    - 'https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images&method=mobile&lx=meizi'
+    - 'https://cdn.seovx.com/?mom=302'
+    - 'https://tuapi.eees.cc/api.php?category=meinv&px=m&type=302'
+    - 'http://3650000.xyz/api/'
