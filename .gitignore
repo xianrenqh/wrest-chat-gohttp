@@ -18,5 +18,6 @@ php-system/
 *.exe
 *.dll
 
+public/FileCache
 plugin/cronjob/
 plugin/cronjob.txt

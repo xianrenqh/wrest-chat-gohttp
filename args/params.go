@@ -47,9 +47,9 @@ var Web = &IWeb{
 }
 
 type IOthers struct {
-	SignInPoint int   `yaml:"SignInPoint"`
-	PicPoint    int   `yaml:"PicPoint"`
-	VideoPoint  int32 `yaml:"VideoPoint"`
+	SignInPoint int `yaml:"SignInPoint"`
+	PicPoint    int `yaml:"PicPoint"`
+	VideoPoint  int `yaml:"VideoPoint"`
 }
 
 var Others = &IOthers{
@@ -61,15 +61,16 @@ var Others = &IOthers{
 type IFunctionKeyWord struct {
 	VideoWord []string `yaml:"videoWord"`
 	FishWord  []string `yaml:"fishWord"`
-	KfcWord   []string `yaml:"kfcWord"`
 	DogWord   []string `yaml:"dogWord"`
 }
 
 var FunctionKeyWord = &IFunctionKeyWord{}
 
 type IApiServer struct {
-	FishApi string   `yaml:"fishApi"`
-	PicApi  []string `yaml:"picApi"`
+	FishApi   string   `yaml:"fishApi"`
+	DogApi    string   `yaml:"dogApi"`
+	PicApi    []string `yaml:"picApi"`
+	VideosApi []string `yaml:"videosApi"`
 }
 
 var ApiServer = &IApiServer{}

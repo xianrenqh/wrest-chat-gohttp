@@ -114,3 +114,20 @@ func GetFiles(picUrlList string, Type int32) (string, error) {
 		return fmt.Sprintf("请求失败，状态码：%s", resp.StatusCode), nil
 	}
 }
+
+func JudgeEqualListWord(content string, picKeyWords []string) bool {
+	words := strings.Split(content, " ") // 假设 content 中的单词由空格分隔
+	for _, word := range words {
+		found := false
+		for _, keyWord := range picKeyWords {
+			if word == keyWord {
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+	return true
+}

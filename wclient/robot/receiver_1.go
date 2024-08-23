@@ -2,9 +2,11 @@ package robot
 
 import (
 	"encoding/xml"
+	"fmt"
 	"github.com/opentdp/wrest-chat/args"
 	"github.com/opentdp/wrest-chat/wcferry/types"
 	"github.com/opentdp/wrest-chat/wclient/aichat"
+	"github.com/opentdp/wrest-chat/wclient/deliver"
 	"strings"
 
 	"github.com/opentdp/wrest-chat/wcferry"
@@ -37,23 +39,34 @@ func receiver1(msg *wcferry.WxMsg) {
 	}
 
 	// 娱乐模式
-	videoKeyWords := args.FunctionKeyWord.VideoWord
 	FishKeyWords := args.FunctionKeyWord.FishWord
-	KfcKeyWords := args.FunctionKeyWord.KfcWord
 	DogKeyWords := args.FunctionKeyWord.DogWord
 
-	if judgeEqualListWord(msg.Content, videoKeyWords) {
-		// 美女视频
-
-	} else if judgeEqualListWord(msg.Content, FishKeyWords) {
+	if deliver.JudgeEqualListWord(msg.Content, FishKeyWords) {
 		// 摸鱼日记
 
-	} else if judgeEqualListWord(msg.Content, KfcKeyWords) {
-		// kfc疯狂星期四
-
-	} else if judgeEqualListWord(msg.Content, DogKeyWords) {
+	} else if deliver.JudgeEqualListWord(msg.Content, DogKeyWords) {
 		// 舔狗日记
 
+	}
+
+	//处理转账
+	if msg.IsGroup && strings.Contains(msg.Content, "转账待你接收") {
+		ret := &types.MsgXmlSilence{}
+		err := xml.Unmarshal([]byte(msg.Xml), ret)
+		fmt.Println("代收款")
+		fmt.Println(err)
+		fmt.Println(msg.Sender)
+		fmt.Println(msg.Roomid)
+		silence := ret.Msgsource.Silence
+		fmt.Println(silence)
+	}
+
+	// 处理收款
+	if msg.IsGroup && strings.Contains(msg.Content, "已收款") {
+		fmt.Println("已收款")
+		fmt.Println(msg.Sender)
+		fmt.Println(msg.Roomid)
 	}
 
 	// 处理聊天指令
@@ -64,21 +77,4 @@ func receiver1(msg *wcferry.WxMsg) {
 		}
 		return
 	}
-}
-
-func judgeEqualListWord(content string, picKeyWords []string) bool {
-	words := strings.Split(content, " ") // 假设 content 中的单词由空格分隔
-	for _, word := range words {
-		found := false
-		for _, keyWord := range picKeyWords {
-			if word == keyWord {
-				found = true
-				break
-			}
-		}
-		if !found {
-			return false
-		}
-	}
-	return true
 }

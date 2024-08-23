@@ -40,15 +40,6 @@ FunctionKeyWord:
     - '摸鱼日记'
     - '摸鱼日历'
   # 触发疯狂星期四文案关键词
-  kfcWord:
-    - 'Kfc'
-    - '疯狂星期四'
-    - '星期四'
-    - '今天星期四'
-    - 'KFC'
-    - 'kfc'
-    - 'v我50'
-    - '明天星期四'
   # 触发舔狗日记关键词
   dogWord:
     - '舔狗日记'
@@ -57,9 +48,31 @@ FunctionKeyWord:
 ApiServer:
   # 摸鱼日记API
   fishApi: 'https://api.j4u.ink/v1/store/redirect/moyu/calendar/today.png'
+  
+  # 舔狗日记API
+  dogApi: 'https://apis.tianapi.com/tiangou/index?key={}'
+
   # 美女图片接口API
   picApi:
     - 'https://api.btstu.cn/sjbz/api.php?lx=dongman&format=images&method=mobile&lx=meizi'
     - 'https://cdn.seovx.com/?mom=302'
     - 'https://tuapi.eees.cc/api.php?category=meinv&px=m&type=302'
     - 'http://3650000.xyz/api/'
+
+  # 视频API配置
+  videosApi:
+    - 'http://api.yujn.cn/api/heisis.php'
+    - 'http://api.yujn.cn/api/xjj.php'
+    - 'http://api.yujn.cn/api/zzxjj.php'
+    - 'https://api.yujn.cn/api/manzhan.php'
+    - 'http://api.yujn.cn/api/rewu.php?type=video'
+    - 'http://api.ovoe.top/API/hbss.php'
+    - 'http://abc.gykj.asia/API/hbss.php'
+    - 'http://api.yujn.cn/api/hanfu.php?type=video'
+    - 'http://abc.gykj.asia/API/gzhf.php'
+    - 'http://www.yujn.cn/api/heisis.php'
+    - 'http://api.yujn.cn/api/manyao.php?type=video'
+    - 'https://api.shenke.love/api/mnsp.php?msg=my&type=video'
+    - 'http://api.yujn.cn/api/COS.php?type=video'
+    - 'http://abc.gykj.asia/API/ntCOS.php'
+    - 'http://api.yujn.cn/api/jksp.php?type=video'

@@ -4,6 +4,7 @@ import (
 	"github.com/opentdp/go-helper/dborm"
 	"github.com/opentdp/go-helper/filer"
 	"github.com/opentdp/wrest-chat/args"
+	"github.com/opentdp/wrest-chat/dbase/keyword"
 	"github.com/opentdp/wrest-chat/dbase/setting"
 	"github.com/opentdp/wrest-chat/dbase/tables"
 	"github.com/rs/zerolog/log"
@@ -47,5 +48,6 @@ func Connect() {
 	// 加载全局配置
 	setting.DataMigrate()
 	setting.Laod()
+	keyword.DataMigrate()
 	log.Info().Msg("数据库连接成功")
 }
