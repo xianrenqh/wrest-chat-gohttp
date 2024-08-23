@@ -9,7 +9,7 @@ type CreateParam struct {
 	Rd     uint   `json:"rd" gorm:"primaryKey;comment:'主键'"`   // 主键
 	Roomid string `json:"roomid" gorm:"index;comment:'群聊 id'"` // 群聊 id
 	Wxid   string `json:"wxid" gorm:"index;comment:'微信用户id'"`  // 微信用户id
-	Point  int32  `json:"point" gorm:"comment:'积分'"`           // 积分
+	Point  int    `json:"point" gorm:"comment:'积分'"`           // 积分
 }
 
 func Create(data *CreateParam) (uint, error) {
@@ -29,7 +29,7 @@ type UpdateParam struct {
 	Rd     uint   `json:"rd" gorm:"primaryKey;comment:'主键'"`   // 主键
 	Roomid string `json:"roomid" gorm:"index;comment:'群聊 id'"` // 群聊 id
 	Wxid   string `json:"wxid" gorm:"index;comment:'微信用户id'"`  // 微信用户id
-	Point  int32  `json:"point" gorm:"comment:'积分'"`           // 积分
+	Point  int
 }
 
 func Update(data *UpdateParam) error {

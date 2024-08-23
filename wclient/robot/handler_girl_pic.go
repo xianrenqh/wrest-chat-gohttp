@@ -39,7 +39,7 @@ func girlPicHandler() []*Handler {
 					return "积分不足，请先努力赚积分吧~\n\n偷偷告诉你：\n平时多舔舔管理员，让他给你施舍点~~"
 				}
 				// 扣减积分
-				deliver.UpdateOrCreatePoints(wxId, roomId, 3, picPoint, 2, "查询美女图片")
+				deliver.UpdateOrCreatePoints(wxId, roomId, 3, int(picPoint), 2, "查询美女图片")
 				// 扣减积分
 				msg := "请求资源成功，扣除积分：" + strconv.FormatInt(int64(picPoint), 10) + "\n"
 				msg += "当前剩余积分：" + strconv.FormatInt(int64(p.Point-picPoint), 10)

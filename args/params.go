@@ -47,8 +47,8 @@ var Web = &IWeb{
 }
 
 type IOthers struct {
-	SignInPoint int32 `yaml:"SignInPoint"`
-	PicPoint    int32 `yaml:"PicPoint"`
+	SignInPoint int   `yaml:"SignInPoint"`
+	PicPoint    int   `yaml:"PicPoint"`
 	VideoPoint  int32 `yaml:"VideoPoint"`
 }
 

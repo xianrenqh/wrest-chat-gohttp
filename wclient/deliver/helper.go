@@ -3,6 +3,7 @@ package deliver
 import (
 	"errors"
 	"fmt"
+	"github.com/opentdp/go-helper/dborm"
 	"github.com/opentdp/wrest-chat/dbase/point"
 	"github.com/opentdp/wrest-chat/dbase/pointlist"
 	"io/ioutil"
@@ -40,7 +41,7 @@ func Send(deliver, content string) error {
 }
 
 // 操作积分
-func UpdateOrCreatePoints(Wxid string, RoomId string, Type int32, sendPoint int32, Sign int32, Desc string) int32 {
+func UpdateOrCreatePoints(Wxid string, RoomId string, Type int32, sendPoint int, Sign int32, Desc string) int {
 	//写入积分明细表
 	pointlist.Create(&pointlist.CreateParam{
 		Wxid:   Wxid,
@@ -54,7 +55,7 @@ func UpdateOrCreatePoints(Wxid string, RoomId string, Type int32, sendPoint int3
 	//写入总积分表
 	upPoint, _ := point.Fetch(&point.FetchParam{Wxid: Wxid, Roomid: RoomId})
 
-	var newPoint int32
+	var newPoint int
 
 	if upPoint.Rd > 0 {
 		if Sign == 1 {
@@ -62,21 +63,11 @@ func UpdateOrCreatePoints(Wxid string, RoomId string, Type int32, sendPoint int3
 		} else {
 			newPoint = upPoint.Point - sendPoint
 			if newPoint < 1 {
-				//删除
-				err := point.Delete(&point.DeleteParam{Rd: upPoint.Rd})
-				if err != nil {
-					return 0
-				}
-				return 0
+				newPoint = 0
 			}
 		}
-		ret := point.Update(&point.UpdateParam{
-			Rd:     upPoint.Rd,
-			Wxid:   Wxid,
-			Roomid: RoomId,
-			Point:  newPoint,
-		})
-		fmt.Println(ret)
+		sql := "UPDATE point SET Point = ? WHERE Rd = ?"
+		dborm.Db.Exec(sql, newPoint, upPoint.Rd)
 	} else {
 		newPoint = sendPoint
 		point.Create(&point.CreateParam{
