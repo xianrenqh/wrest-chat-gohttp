@@ -34,7 +34,7 @@ var (
 	// HELP 指令扩展内容
 	HelpAdditive = ""
 	// 抓取微信公众号文章开关
-	MpArticleEnable = true
+	MpArticleEnable = false
 )
 
 // 从数据库加载配置
@@ -77,7 +77,7 @@ func Laod() {
 		case "HelpAdditive":
 			HelpAdditive = item.Value
 		case "MpArticleEnable":
-			MpArticleEnable = item.Value == "true"
+			MpArticleEnable = item.Value == "false"
 		}
 	}
 

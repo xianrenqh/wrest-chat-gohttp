@@ -92,7 +92,7 @@ func (c *Client) DisableReceiver(ks ...string) error {
 	return err
 }
 
-func (c *Client) wxInitSDK() error {
+func (c *Client) wxInitSDK_BakOld() error {
 	if c.WcfBinary == "" {
 		return nil
 	}
@@ -113,7 +113,7 @@ func (c *Client) wxInitSDK() error {
 
 // 关闭 wcf 服务
 // return error 错误信息
-func (c *Client) wxDestroySDK() error {
+func (c *Client) wxDestroySDK_BakOld() error {
 	if c.WcfBinary == "" {
 		return nil
 	}
@@ -125,7 +125,7 @@ func (c *Client) wxDestroySDK() error {
 
 // 启动 wcf 服务
 // return error 错误信息
-func (c *Client) wxInitSDKBakNew() error {
+func (c *Client) wxInitSDK() error {
 	// 尝试自动启动微信
 	/*if c.WeChatAuto {
 		out, _ := exec.Command("tasklist").Output()
@@ -145,7 +145,7 @@ func (c *Client) wxInitSDKBakNew() error {
 
 // 关闭 wcf 服务
 // return error 错误信息
-func (c *Client) wxDestroySDKBakNew() error {
+func (c *Client) wxDestroySDK() error {
 	// 关闭 wcf 服务
 	err := c.sdkCall("WxDestroySDK", uintptr(0))
 	log.Warn().Msg("wcf服务已被关闭")

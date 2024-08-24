@@ -23,11 +23,15 @@ func girlPicHandler() []*Handler {
 		Command:  "美女图片",
 		Describe: "输入指定指令，如：'图片','妹子','美女'等，即可获取小姐姐图片",
 		Callback: func(msg *wcferry.WxMsg) string {
-			if !msg.IsGroup {
-				return ""
-			}
+			selfWxid := wc.CmdClient.GetSelfWxid()
 			wxId := msg.Sender
 			roomId := msg.Roomid
+
+			if !msg.IsGroup || wxId == selfWxid {
+				//非群聊或者是自己的消息，过滤
+				return ""
+			}
+
 			picPoint := args.Others.PicPoint
 
 			//判断权限级别

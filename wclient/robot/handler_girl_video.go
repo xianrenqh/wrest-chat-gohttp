@@ -23,11 +23,15 @@ func girlVideoHandler() []*Handler {
 		Command:  "美女视频",
 		Describe: "输入指定指令，如：'视频','美女视频'等，即可获取小姐姐视频",
 		Callback: func(msg *wcferry.WxMsg) string {
-			if !msg.IsGroup {
-				return ""
-			}
+			selfWxid := wc.CmdClient.GetSelfWxid()
 			wxId := msg.Sender
 			roomId := msg.Roomid
+
+			if !msg.IsGroup || wxId == selfWxid {
+				//非群聊或者是自己的消息，过滤
+				return ""
+			}
+
 			videoPoint := args.Others.VideoPoint
 
 			//判断权限级别
