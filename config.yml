@@ -10,7 +10,7 @@ Wcf:
   MsgPrint: false # 是否将消息输出到控制台，可用于调试
   MsgStore: true # 是否将消息写入数据库，用于防撤回和统计
   MsgStoreDays: 7 # 启动时清理n天前的消息，0 表示不清理
-  WcfBinary: sdk.dll # wcf 二进制文件路径，留空则不托管（Linux 必须留空） wcf.exe
+  SdkLibrary: sdk.dll # wcf 二进制文件路径，留空则不托管（Linux 必须留空）
 
 # Web 服务
 Web:
@@ -35,10 +35,7 @@ FunctionKeyWord:
     - '美女视频'
     - '成人视频'
     - '18禁'
-  # 触发摸鱼日记关键词
-  fishWord:
-    - '摸鱼日记'
-    - '摸鱼日历'
+
   # 触发疯狂星期四文案关键词
   # 触发舔狗日记关键词
   dogWord:
@@ -47,10 +44,15 @@ FunctionKeyWord:
 
 ApiServer:
   # 摸鱼日记API
-  fishApi: 'https://api.j4u.ink/v1/store/redirect/moyu/calendar/today.png'
-  
+  fishApi: 'https://dayu.qqsuu.cn/moyuribao/apis.php?type=json'
+  # 摸鱼视频API
+  fishVideoApi: 'http://dayu.qqsuu.cn/moyuribaoshipin/apis.php?type=json'
   # 舔狗日记API
   dogApi: 'https://apis.tianapi.com/tiangou/index?key={}'
+  # 内涵段子API
+  jokeApi: 'https://dayu.qqsuu.cn/neihanduanzi/apis.php'
+  # 星座运势
+  constellationApi: 'https://dayu.qqsuu.cn/xingzuoyunshi/apis.php'
 
   # 美女图片接口API
   picApi:
@@ -61,6 +63,7 @@ ApiServer:
 
   # 视频API配置
   videosApi:
+    - 'https://api.kuleu.com/api/xjj?type=v'
     - 'http://api.yujn.cn/api/heisis.php'
     - 'http://api.yujn.cn/api/xjj.php'
     - 'http://api.yujn.cn/api/zzxjj.php'

@@ -21,6 +21,7 @@ func girlPicHandler() []*Handler {
 		Order:    400,
 		Roomid:   "*",
 		Command:  "美女图片",
+		Emoij:    "🖼",
 		Describe: "输入指定指令，如：'图片','妹子','美女'等，即可获取小姐姐图片",
 		Callback: func(msg *wcferry.WxMsg) string {
 			selfWxid := wc.CmdClient.GetSelfWxid()

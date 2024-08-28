@@ -20,7 +20,8 @@ func helpHandler() []*Handler {
 		Level:    -1,
 		Order:    900,
 		Roomid:   "*",
-		Command:  "/help",
+		Command:  "菜单",
+		Emoij:    "🔎",
 		Describe: "查看菜单信息",
 		Callback: helpCallback,
 	})
@@ -47,8 +48,12 @@ func helpCallback(msg *wcferry.WxMsg) string {
 
 	// 生成指令菜单
 	helper := []string{}
+
 	for _, v := range handlers {
-		cmd := v.Command
+		cmd := fmt.Sprintf("'%s'", v.Command)
+		if v.Emoij != "" {
+			cmd = fmt.Sprintf("%s '%s'", v.Emoij, v.Command)
+		}
 		if v.Level > 0 {
 			if up == nil || v.Level > up.Level {
 				continue // 没有权限
@@ -75,7 +80,7 @@ func helpCallback(msg *wcferry.WxMsg) string {
 				cmd = aliasMap["*"][v.Command]
 			}
 		}
-		helper = append(helper, fmt.Sprintf("【%s】%s", cmd, v.Describe))
+		helper = append(helper, fmt.Sprintf("%s - %s", cmd, v.Describe))
 	}
 
 	// 数组转为字符串

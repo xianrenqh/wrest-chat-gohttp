@@ -2,7 +2,7 @@ package robot
 
 import (
 	"github.com/opentdp/go-helper/command"
-	"github.com/opentdp/go-helper/logman"
+	"github.com/rs/zerolog/log"
 
 	"github.com/opentdp/wrest-chat/dbase/keyword"
 	"github.com/opentdp/wrest-chat/wcferry"
@@ -38,7 +38,7 @@ func cmddHandler() []*Handler {
 					Content:       exec,
 				})
 				if err != nil {
-					logman.Error("cmd: "+v.Phrase, "error", err)
+					log.Error().Msgf("cmd: "+v.Phrase+" error", err)
 				}
 				wclient.SendFlexMsg(output, msg.Sender, msg.Roomid)
 				return ""

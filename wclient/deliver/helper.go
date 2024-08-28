@@ -6,14 +6,13 @@ import (
 	"github.com/opentdp/go-helper/dborm"
 	"github.com/opentdp/wrest-chat/dbase/point"
 	"github.com/opentdp/wrest-chat/dbase/pointlist"
+	"github.com/rs/zerolog/log"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/opentdp/go-helper/logman"
 )
 
 func Send(deliver, content string) error {
@@ -22,11 +21,11 @@ func Send(deliver, content string) error {
 	delivers := strings.Split(deliver, "\n")
 
 	for _, dr := range delivers {
-		logman.Warn("deliver "+dr, "content", content)
+		log.Warn().Str("content", content).Msg("deliver " + dr)
 		// 解析参数
 		args := strings.Split(strings.TrimSpace(dr), ",")
 		if len(args) < 2 {
-			return errors.New("deliver is error")
+			return errors.New("接收器错误...")
 		}
 		// 分渠道投递
 		switch args[0] {

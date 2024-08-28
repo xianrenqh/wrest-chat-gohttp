@@ -23,6 +23,7 @@ type Handler struct {
 	Describe string      // 指令的描述信息
 	PreCheck HandlerFunc // 前置检查，可拦截文本聊天内容
 	Callback HandlerFunc // 指令回调，返回回复内容
+	Emoij    string      // 指令表情
 }
 
 func GetHandlers() []*Handler {
@@ -52,6 +53,9 @@ func ResetHandlers() {
 	hlst = append(hlst, addManagerHandler()...)
 	hlst = append(hlst, girlPicHandler()...)
 	hlst = append(hlst, girlVideoHandler()...)
+	hlst = append(hlst, pointHandler()...)
+	hlst = append(hlst, fishHandler()...)
+	hlst = append(hlst, jokeHandler()...)
 
 	// 指令列表排序
 	sort.Slice(hlst, func(i, j int) bool {

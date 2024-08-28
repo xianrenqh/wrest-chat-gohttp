@@ -2,13 +2,13 @@ package wclient
 
 import (
 	"encoding/json"
+	"github.com/rs/zerolog/log"
 	"net"
 	"net/url"
 	"strings"
 
 	"github.com/opentdp/go-helper/request"
 	"github.com/opentdp/go-helper/strutil"
-	"github.com/rs/zerolog/log"
 
 	"github.com/opentdp/wrest-chat/args"
 	"github.com/opentdp/wrest-chat/dbase/message"
@@ -35,14 +35,13 @@ func Register() *wcferry.Client {
 	wc = &wcferry.Client{
 		ListenAddr: host,
 		ListenPort: strutil.ToInt(port),
-		WcfBinary:  args.Wcf.WcfBinary,
-		WeChatAuto: args.Wcf.WeChatAuto,
+		SdkLibrary: args.Wcf.SdkLibrary,
 	}
 
 	// 初始化连接
-	log.Info().Msg("wcf正在启动 ...")
+	log.Warn().Msg("wcf正在启动中...")
 	if err := wc.Connect(); err != nil {
-		log.Error().Err(err).Msg("wcf启动失败！")
+		log.Error().Err(err).Msg("wcf启动失败...")
 	}
 
 	// 打印收到的消息
@@ -123,7 +122,7 @@ func ApiRequestMsg(url, wxid, roomid string) int32 {
 
 	// 验证参数
 	if self == nil {
-		log.Error().Msg("ApiRequestMsg::GetSelfInfo failed")
+		log.Error().Msg("ApiRequestMsg::GetSelfInfo 失败")
 		return -1
 	}
 

@@ -77,7 +77,7 @@ func Laod() {
 		case "HelpAdditive":
 			HelpAdditive = item.Value
 		case "MpArticleEnable":
-			MpArticleEnable = item.Value == "false"
+			MpArticleEnable = item.Value == "true"
 		}
 	}
 

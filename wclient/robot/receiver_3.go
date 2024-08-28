@@ -1,13 +1,12 @@
 package robot
 
 import (
+	"github.com/rs/zerolog/log"
 	"os"
 	"path/filepath"
 
 	"github.com/opentdp/go-helper/command"
 	"github.com/opentdp/go-helper/filer"
-	"github.com/opentdp/go-helper/logman"
-
 	"github.com/opentdp/wrest-chat/args"
 	"github.com/opentdp/wrest-chat/dbase/keyword"
 	"github.com/opentdp/wrest-chat/dbase/message"
@@ -38,7 +37,7 @@ func receiver3(msg *wcferry.WxMsg) {
 				Content:       v.Target + " " + img,
 			})
 			if err != nil {
-				logman.Error("cmd: "+v.Phrase, "error", err)
+				log.Error().Msgf("cmd: "+v.Phrase, "error", err)
 			}
 			wclient.SendFlexMsg(output, msg.Sender, msg.Roomid)
 		}
@@ -72,12 +71,12 @@ func msgImage(id uint64, extra string) string {
 	// 从消息中获取
 	fp, err := wc.CmdClient.DownloadImage(id, extra, target, 15)
 	if err != nil || fp == "" {
-		logman.Error("image save failed", "err", err)
+		log.Error().Err(err).Msg("图片保存失败")
 		return ""
 	}
 
 	// 保存到数据库
-	logman.Info("image saved", "path", fp)
+	log.Info().Str("地址", fp).Msg("图片保存")
 	if args.Wcf.MsgStore {
 		message.Update(&message.UpdateParam{Id: id, Remark: fp})
 	}

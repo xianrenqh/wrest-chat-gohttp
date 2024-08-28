@@ -21,6 +21,7 @@ func girlVideoHandler() []*Handler {
 		Order:    400,
 		Roomid:   "*",
 		Command:  "美女视频",
+		Emoij:    "🧝",
 		Describe: "输入指定指令，如：'视频','美女视频'等，即可获取小姐姐视频",
 		Callback: func(msg *wcferry.WxMsg) string {
 			selfWxid := wc.CmdClient.GetSelfWxid()
@@ -87,8 +88,8 @@ func girlVideoHandler() []*Handler {
 				//fmt.Println(videoPath)
 				wc.CmdClient.SendFile(dir+"/"+videoSrc, roomId)
 
-				//5秒后删除资源
-				time.Sleep(5 * time.Second)
+				//8秒后删除资源
+				time.Sleep(8 * time.Second)
 				err = os.Remove(videoPath)
 				if err != nil {
 					return ""

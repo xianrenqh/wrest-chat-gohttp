@@ -17,6 +17,7 @@ func signInHandler() []*Handler {
 		Order:   1,
 		Roomid:  "*",
 		Command: "签到",
+		Emoij:   "⭐",
 		//Describe: "签到获取积分" + sendPoint,
 		Describe: fmt.Sprintf("签到获取 %d 积分", sendPoint),
 		Callback: func(msg *wcferry.WxMsg) string {
@@ -31,14 +32,13 @@ func signInHandler() []*Handler {
 
 			if up.Rd <= 0 {
 				pointNew := deliver.UpdateOrCreatePoints(wxid, roomId, 2, sendPoint, 1, "签到")
-
 				return fmt.Sprintf("恭喜你签到成功, 当前群聊可用积分: %d", pointNew)
 			} else {
 				now := time.Now().Unix()
-				startOfDay := now - (now % 86400)                           // 获取今天开始时间的时间戳（凌晨零点）
-				endOfDay := startOfDay + 86400 - 1                          // 获取今天的结束时间（明天凌晨零点之前的一秒）
-				if up.CreatedAt >= startOfDay && up.CreatedAt <= endOfDay { // 注意使用 >= 和 <= 来判断时间范围
-					return "你干嘛~ 你今天已经签到过了！"
+				startOfDay := now - (now % 86400)  // 获取今天开始时间的时间戳（凌晨零点）
+				endOfDay := startOfDay + 86400 - 1 // 获取今天的结束时间（明天凌晨零点之前的一秒）
+				if up.CreatedAt >= startOfDay && up.CreatedAt <= endOfDay {
+					return "你干嘛~ 你今天已经签到过了！~"
 				}
 
 				pointNew := deliver.UpdateOrCreatePoints(wxid, roomId, 2, sendPoint, 1, "签到")

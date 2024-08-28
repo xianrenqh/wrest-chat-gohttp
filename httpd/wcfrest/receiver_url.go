@@ -1,10 +1,10 @@
 package wcfrest
 
 import (
+	"github.com/rs/zerolog/log"
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/go-helper/request"
 
 	"github.com/opentdp/wrest-chat/wcferry"
@@ -45,7 +45,7 @@ func (wc *Controller) enabledReceiver(c *gin.Context) {
 		return
 	}
 
-	logman.Warn("enable receiver", "url", req.Url)
+	log.Warn().Str("url", req.Url).Msg("开启接收器")
 	key, err := wc.EnrollReceiver(true, urlReciever(req.Url))
 	if err != nil {
 		c.Set("Error", err)
@@ -81,7 +81,7 @@ func (wc *Controller) disableReceiver(c *gin.Context) {
 		return
 	}
 
-	logman.Warn("disable receiver", "url", req.Url)
+	log.Warn().Str("url", req.Url).Msg("禁用接收器")
 	if urlReceiverList[req.Url] == "" {
 		c.Set("Error", "url not exists")
 		return

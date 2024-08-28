@@ -21,13 +21,11 @@ type IWcf struct {
 	MsgPrint     bool   `yaml:"MsgPrint"`     // 是否打印收到的消息
 	MsgStore     bool   `yaml:"MsgStore"`     // 是否存储收到的消息
 	MsgStoreDays int    `yaml:"MsgStoreDays"` // 消息留存天数
-	WcfBinary    string `yaml:"WcfBinary"`    // 留空则不注入微信
-	WeChatAuto   bool   `yaml:"wechatAuto"`   // 是否自动启动微信
+	SdkLibrary   string `yaml:"SdkLibrary"`   // 留空则不注入微信
 }
 
 var Wcf = &IWcf{
-	Address:    "127.0.0.1:7601",
-	WeChatAuto: true,
+	Address: "127.0.0.1:7601",
 }
 
 // Web 服务
@@ -60,17 +58,25 @@ var Others = &IOthers{
 
 type IFunctionKeyWord struct {
 	VideoWord []string `yaml:"videoWord"`
-	FishWord  []string `yaml:"fishWord"`
 	DogWord   []string `yaml:"dogWord"`
 }
 
 var FunctionKeyWord = &IFunctionKeyWord{}
 
+type json struct {
+	Code string `yaml:"code"`
+	Msg  string `yaml:"msg"`
+	Data string `yaml:"data"`
+}
+
 type IApiServer struct {
-	FishApi   string   `yaml:"fishApi"`
-	DogApi    string   `yaml:"dogApi"`
-	PicApi    []string `yaml:"picApi"`
-	VideosApi []string `yaml:"videosApi"`
+	FishApi          string   `yaml:"fishApi"`
+	FishVideoApi     string   `yaml:"fishVideoApi"`
+	DogApi           string   `yaml:"dogApi"`
+	JokeApi          string   `yaml:"jokeApi"`
+	ConstellationApi string   `yaml:"constellationApi"`
+	PicApi           []string `yaml:"picApi"`
+	VideosApi        []string `yaml:"videosApi"`
 }
 
 var ApiServer = &IApiServer{}

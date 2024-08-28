@@ -16,6 +16,7 @@ func addManagerHandler() []*Handler {
 		Order:    400,
 		Roomid:   "*",
 		Command:  "添加管理",
+		Emoij:    "👨🏻‍💼",
 		Describe: "把**添加成管理员",
 		Callback: func(msg *wcferry.WxMsg) string {
 			if !msg.IsGroup {

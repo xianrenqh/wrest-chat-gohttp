@@ -1,64 +1,47 @@
 package wcferry
 
 import (
-	"embed"
 	"errors"
-	"github.com/opentdp/go-helper/filer"
-	"github.com/opentdp/go-helper/onquit"
-	"github.com/rs/zerolog/log"
-	"golang.org/x/sys/windows"
-	"os"
-	"os/exec"
-	"path"
-	"path/filepath"
-	"strconv"
 	"time"
+
+	"github.com/opentdp/go-helper/onquit"
 )
 
-const Wcf_Version = "39.0.145"
-const Wechat_Version = "3.9.2.23"
-
-//go:embed libs
-var libfs embed.FS
+const Wcf_Version = "39.2.4.0"
+const Wechat_Version = "3.9.10.27"
 
 type Client struct {
-	WcfBinary  string     // wcf.exe 路径
+	SdkLibrary string     // sdk.dll 路径
 	ListenAddr string     // wcf 监听地址
 	ListenPort int        // wcf 监听端口
 	CmdClient  *CmdClient // 命令客户端
 	MsgClient  *MsgClient // 消息客户端
-
-	//这里调用sdk.dll库【库有问题】
-	sdkLibrary string // sdk.dll 路径
-	WeChatAuto bool   // 微信自动启停
 }
 
-// 启动 wcf 服务
+// 注册消息服务
 // return error 错误信息
 func (c *Client) Connect() error {
-	log.Info().Msg("正在初始化Robot服务中，请稍后...")
 	if c.ListenAddr == "" {
 		c.ListenAddr = "127.0.0.1"
 	}
 	if c.ListenPort == 0 {
 		c.ListenPort = 10086
 	}
-	// 注册 wcf 服务
+	// 启动 rpc
+	if err := c.wxInitSDK(); err != nil {
+		return err
+	}
+	// 配置客户端
 	c.CmdClient = &CmdClient{
 		pbSocket: newPbSocket(c.ListenAddr, c.ListenPort),
 	}
 	c.MsgClient = &MsgClient{
 		pbSocket: newPbSocket(c.ListenAddr, c.ListenPort+1),
 	}
-	// 启动 wcf 服务
-	if err := c.wxInitSDK(); err != nil {
-		return err
-	}
-	log.Info().Msg("wcf服务启动成功...")
-	// 自动注销 wcf
+	// 退出时注销
 	onquit.Register(func() {
-		c.CmdClient.Destroy()
 		c.MsgClient.Destroy()
+		c.CmdClient.Destroy()
 		c.wxDestroySDK()
 	})
 	// 返回连接结果
@@ -92,94 +75,16 @@ func (c *Client) DisableReceiver(ks ...string) error {
 	return err
 }
 
-func (c *Client) wxInitSDK_BakOld() error {
-	if c.WcfBinary == "" {
-		return nil
-	}
-	// 尝试在子目录查找
-	if !filer.Exists(c.WcfBinary) {
-		if !filer.Exists("wcferry/" + c.WcfBinary) {
-			return errors.New(c.WcfBinary + " not found")
-		}
-		c.WcfBinary = "wcferry/" + c.WcfBinary
-	}
-
-	// 打开 wcf 服务程序
-	port := strconv.Itoa(c.ListenPort)
-	log.Warn().Msg(c.WcfBinary + " start " + port)
-	cmd := exec.Command(c.WcfBinary, "start", port)
-	return cmd.Run()
-}
-
-// 关闭 wcf 服务
-// return error 错误信息
-func (c *Client) wxDestroySDK_BakOld() error {
-	if c.WcfBinary == "" {
-		return nil
-	}
-	// 关闭 wcf 服务
-	log.Warn().Msg(c.WcfBinary + " 已停止")
-	cmd := exec.Command(c.WcfBinary, "stop")
-	return cmd.Run()
-}
-
 // 启动 wcf 服务
 // return error 错误信息
 func (c *Client) wxInitSDK() error {
-	// 尝试自动启动微信
-	/*if c.WeChatAuto {
-		out, _ := exec.Command("tasklist").Output()
-		if strings.Contains(string(out), "WeChat.exe") {
-			return errors.New("please close wechat")
-		}
-	}*/
-	// 释放 libs 并注入微信
-	tf, err := filer.ReleaseEmbedFS(libfs, "libs")
-	if err == nil {
-		c.sdkLibrary = path.Join(tf, "sdk.dll")
-		c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
-		time.Sleep(5 * time.Second)
-	}
+	err := c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
+	time.Sleep(5 * time.Second)
 	return err
 }
 
 // 关闭 wcf 服务
 // return error 错误信息
 func (c *Client) wxDestroySDK() error {
-	// 关闭 wcf 服务
-	err := c.sdkCall("WxDestroySDK", uintptr(0))
-	log.Warn().Msg("wcf服务已被关闭")
-	// 尝试自动关闭微信
-	/*if c.WeChatAuto {
-		logman.Info("killing wechat process")
-		cmd := exec.Command("taskkill", "/IM", "WeChat.exe", "/F")
-		if err := cmd.Run(); err != nil {
-			logman.Warn("failed to kill wechat", "error", err)
-			return err
-		}
-	}*/
-	// 尝试删除 libs 临时目录
-	os.RemoveAll(filepath.Dir(c.sdkLibrary))
-	return err
-}
-
-// 调用 sdk.dll 中的函数
-func (c *Client) sdkCall(fn string, a ...uintptr) error {
-	// 加载 sdk.dll
-	sdk, err := windows.LoadDLL(c.sdkLibrary)
-	if err != nil {
-		log.Error().Msg("sdk.dll文件加载失败")
-		return err
-	}
-	defer sdk.Release()
-	// 查找 fn 函数
-	proc, err := sdk.FindProc(fn)
-	if err != nil {
-		log.Error().Str("function", "fn").Err(err).Msg("failed to call")
-		return err
-	}
-	// 执行 fn(a...)
-	r1, r2, err := proc.Call(a...)
-	log.Warn().Str("function", fn).Int("r1", int(r1)).Str("r2", strconv.Itoa(int(r2))).Err(err).Msg("call dll")
-	return err
+	return c.sdkCall("WxDestroySDK")
 }
