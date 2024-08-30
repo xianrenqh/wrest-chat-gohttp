@@ -3,12 +3,11 @@ package robot
 import (
 	"encoding/xml"
 	"github.com/opentdp/wrest-chat/args"
+	"github.com/opentdp/wrest-chat/wcferry"
 	"github.com/opentdp/wrest-chat/wcferry/types"
 	"github.com/opentdp/wrest-chat/wclient/aichat"
 	"github.com/opentdp/wrest-chat/wclient/deliver"
 	"strings"
-
-	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 // 处理新消息
@@ -25,8 +24,9 @@ func receiver1(msg *wcferry.WxMsg) {
 				if v == "" {
 					continue
 				}
+				msgContent := msg.Content
+				// 这里@机器人
 				if v == selfWxid {
-					msgContent := msg.Content
 					data := aichat.Text(msgContent, selfWxid, msg.Sender)
 					if u := wc.CmdClient.GetInfoByWxid(msg.Sender); u != nil && u.Name != "" {
 						data = "@" + u.Name + "\n" + data
