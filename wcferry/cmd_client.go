@@ -2,6 +2,7 @@ package wcferry
 
 import (
 	"errors"
+	"fmt"
 	"path"
 	"strings"
 	"time"
@@ -564,7 +565,7 @@ func (c *CmdClient) GetFriends() []*RpcContact {
 func (c *CmdClient) GetInfoByWxid(wxid string) *RpcContact {
 	req := &Request{Func: Functions_FUNC_GET_CONTACT_INFO}
 	req.Msg = &Request_Str{
-		Str: wxid,
+		Str: strings.TrimSpace(wxid),
 	}
 	recv := c.call(req)
 	contacts := recv.GetContacts()
@@ -575,8 +576,9 @@ func (c *CmdClient) GetInfoByWxid(wxid string) *RpcContact {
 		}
 	} else {
 		// 取不到数据就查数据库
-		user := c.DbSqlQuery("MicroMsg.db", "SELECT * FROM Contact  where UserName ='"+wxid+"';")
-		if user != nil {
+		sql := fmt.Sprintf(`SELECT * FROM Contact WHERE UserName = '%s';`, strings.TrimSpace(wxid))
+		user := c.DbSqlQuery("MicroMsg.db", sql)
+		if len(user) > 0 {
 			userInfo := &UserInfo{}
 			userInfo.Wxid = user[0]["UserName"].(string)
 			userInfo.Name = user[0]["NickName"].(string)

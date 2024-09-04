@@ -29,6 +29,7 @@ func addManagerHandler() []*Handler {
 			if err == nil && ret.AtUserList != "" {
 				users := strings.Split(ret.AtUserList, ",")
 				for _, v := range users {
+					v := strings.TrimSpace(v)
 					if v == "" {
 						continue
 					}

@@ -45,15 +45,17 @@ var Web = &IWeb{
 }
 
 type IOthers struct {
-	SignInPoint int `yaml:"SignInPoint"`
-	PicPoint    int `yaml:"PicPoint"`
-	VideoPoint  int `yaml:"VideoPoint"`
+	SignInPoint     int `yaml:"SignInPoint"`
+	PicPoint        int `yaml:"PicPoint"`
+	VideoPoint      int `yaml:"VideoPoint"`
+	AddPointManager int `yaml:"AddPointManager"`
 }
 
 var Others = &IOthers{
-	SignInPoint: 10,
-	PicPoint:    1,
-	VideoPoint:  2,
+	SignInPoint:     10,
+	PicPoint:        1,
+	VideoPoint:      2,
+	AddPointManager: 100,
 }
 
 type IFunctionKeyWord struct {

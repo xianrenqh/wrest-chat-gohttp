@@ -36,6 +36,7 @@ func banHandler() []*Handler {
 				// 批量操作拉黑
 				users := strings.Split(ret.AtUserList, ",")
 				for _, v := range users {
+					v := strings.TrimSpace(v)
 					if v == "" {
 						continue
 					}
@@ -67,6 +68,7 @@ func banHandler() []*Handler {
 			if err == nil && ret.AtUserList != "" {
 				users := strings.Split(ret.AtUserList, ",")
 				for _, v := range users {
+					v := strings.TrimSpace(v)
 					if v == "" {
 						continue
 					}

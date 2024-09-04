@@ -23,9 +23,10 @@ Web:
 
 # 其他配置
 Others:
-  SignInPoint: 10 # 签到积分
+  SignInPoint: 5 # 签到积分
   PicPoint: 1 # 获取图片积分
   VideoPoint: 2 # 获取视频积分
+  AddPointManager: 200 # 管理员最多增加积分值
 
 ## 其它功能关键词配置
 FunctionKeyWord:

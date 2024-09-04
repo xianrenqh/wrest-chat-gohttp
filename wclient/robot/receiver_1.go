@@ -21,6 +21,7 @@ func receiver1(msg *wcferry.WxMsg) {
 			users := strings.Split(ret.AtUserList, ",")
 			//fmt.Println("获取到的@用户列表：", users)
 			for _, v := range users {
+				v := strings.TrimSpace(v)
 				if v == "" {
 					continue
 				}

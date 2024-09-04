@@ -54,6 +54,7 @@ func ResetHandlers() {
 	hlst = append(hlst, girlPicHandler()...)
 	hlst = append(hlst, girlVideoHandler()...)
 	hlst = append(hlst, pointHandler()...)
+	hlst = append(hlst, pointAddHandler()...)
 	hlst = append(hlst, fishHandler()...)
 	hlst = append(hlst, jokeHandler()...)
 
