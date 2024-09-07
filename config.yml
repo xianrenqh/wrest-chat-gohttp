@@ -19,6 +19,8 @@ Web:
   Storage: storage # 附件存储路径，非必要不修改
   Swagger: true # 是否启用内置接口文档和调试工具
   Token: "123456" # 使用 Token 验证请求，留空则不验证
+  UserName: "admin"  # 管理员账号
+  PassWord: "123456"  # 管理员密码
 
 
 # 其他配置

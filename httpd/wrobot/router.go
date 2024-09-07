@@ -8,6 +8,11 @@ import (
 
 func Route() {
 
+	// 创建一个不带中间件的新路由组用于 loginAdmin 接口
+	loginRg := httpd.Group("/login")
+	admin := Admin{}
+	loginRg.POST("login_admin", admin.loginAdmin)
+
 	rg := httpd.Group("/bot")
 	rg.Use(middle.OutputHandle, middle.ApiGuard)
 

@@ -31,11 +31,13 @@ var Wcf = &IWcf{
 // Web 服务
 
 type IWeb struct {
-	Address string `yaml:"Address"` // Web 监听地址
-	PushUrl string `yaml:"PushUrl"` // 消息推送地址
-	Storage string `yaml:"Storage"` // 附件存储路径
-	Swagger bool   `yaml:"Swagger"` // 是否启用 Api 文档
-	Token   string `yaml:"Token"`   // 使用 Token 验证请求
+	Address  string `yaml:"Address"`  // Web 监听地址
+	PushUrl  string `yaml:"PushUrl"`  // 消息推送地址
+	Storage  string `yaml:"Storage"`  // 附件存储路径
+	Swagger  bool   `yaml:"Swagger"`  // 是否启用 Api 文档
+	Token    string `yaml:"Token"`    // 使用 Token 验证请求
+	UserName string `yaml:"UserName"` // 使用 UserName 验证登录
+	PassWord string `yaml:"PassWord"` // 使用 PassWord 验证登录
 }
 
 var Web = &IWeb{

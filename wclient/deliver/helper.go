@@ -1,6 +1,8 @@
 package deliver
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"github.com/opentdp/go-helper/dborm"
@@ -129,4 +131,17 @@ func JudgeEqualListWord(content string, picKeyWords []string) bool {
 		}
 	}
 	return true
+}
+
+// 对字符串进行两次 MD5 加密
+func DoubleMD5(s string) string {
+	// 第一次 MD5 加密
+	hash1 := md5.Sum([]byte(s))
+	firstMd5 := hex.EncodeToString(hash1[:])
+
+	// 第二次 MD5 加密
+	hash2 := md5.Sum([]byte(firstMd5))
+	secondMd5 := hex.EncodeToString(hash2[:])
+
+	return secondMd5
 }
