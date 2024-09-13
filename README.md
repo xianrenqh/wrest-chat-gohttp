@@ -27,6 +27,8 @@ fork地址：
 - 内置 Api 调试工具，所有接口都可以在线调试
 - 尽可能将消息中的 Xml 转为 Object，便于前端解析
 - 支持计划任务、外部指令、指令插件等扩展功能，详见 [wrest-plugin](https://github.com/opentdp/wrest-plugin)
+## wrest使用文档：
+https://docs.opentdp.org/#/wrest/README
 
 ## 食用方法
 ### 运行：

@@ -1366,6 +1366,25 @@
                 }
             }
         },
+        "/login/login_admin": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::其他"
+                ],
+                "summary": "用户密码登录",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wrobot.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
         "/wcf/accept_new_friend": {
             "post": {
                 "produces": [
@@ -2518,6 +2537,7 @@
                 "minute",
                 "month",
                 "name",
+                "salt",
                 "second",
                 "timeout",
                 "type"
@@ -2534,6 +2554,9 @@
                 },
                 "deliver": {
                     "type": "string"
+                },
+                "deliver_type": {
+                    "type": "integer"
                 },
                 "directory": {
                     "type": "string"
@@ -2555,6 +2578,9 @@
                 },
                 "rd": {
                     "type": "integer"
+                },
+                "salt": {
+                    "type": "string"
                 },
                 "second": {
                     "type": "string"
@@ -2608,6 +2634,7 @@
                 "minute",
                 "month",
                 "name",
+                "salt",
                 "second",
                 "timeout",
                 "type"
@@ -2624,6 +2651,9 @@
                 },
                 "deliver": {
                     "type": "string"
+                },
+                "deliver_type": {
+                    "type": "integer"
                 },
                 "directory": {
                     "type": "string"
@@ -2645,6 +2675,9 @@
                 },
                 "rd": {
                     "type": "integer"
+                },
+                "salt": {
+                    "type": "string"
                 },
                 "second": {
                     "type": "string"
@@ -2689,7 +2722,7 @@
                 "roomid": {
                     "type": "string"
                 },
-                "type": {
+                "status": {
                     "type": "integer"
                 }
             }
@@ -2711,7 +2744,7 @@
                 "roomid": {
                     "type": "string"
                 },
-                "type": {
+                "status": {
                     "type": "integer"
                 }
             }
@@ -3329,6 +3362,10 @@
                     "description": "执行结果交付方式",
                     "type": "string"
                 },
+                "deliver_type": {
+                    "description": "执行结果类型 [1=私聊，2=群聊]",
+                    "type": "integer"
+                },
                 "directory": {
                     "description": "工作目录",
                     "type": "string"
@@ -3356,6 +3393,10 @@
                 "rd": {
                     "description": "主键",
                     "type": "integer"
+                },
+                "salt": {
+                    "description": "随机盐",
+                    "type": "string"
                 },
                 "second": {
                     "description": "秒",
@@ -4061,6 +4102,22 @@
                 },
                 "token": {
                     "type": "string"
+                }
+            }
+        },
+        "wrobot.CommonPayload": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "description": "错误信息"
+                },
+                "result": {
+                    "description": "返回结果",
+                    "type": "string"
+                },
+                "success": {
+                    "description": "是否成功",
+                    "type": "boolean"
                 }
             }
         }

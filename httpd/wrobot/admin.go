@@ -15,6 +15,16 @@ type AdminParam struct {
 	PassWord string `json:"password" binding:"required"`
 }
 
+// 通用结果
+type CommonPayload struct {
+	// 是否成功
+	Success bool `json:"success,omitempty"`
+	// 返回结果
+	Result string `json:"result,omitempty"`
+	// 错误信息
+	Error error `json:"error,omitempty"`
+}
+
 // @Summary 用户密码登录
 // @Produce json
 // @Tags WCF::其他
