@@ -66,6 +66,7 @@ ApiServer:
 
   # 视频API配置
   videosApi:
+    - 'https://api.lbbb.cc/api/ksbianzhuang'
     - 'https://api.kuleu.com/api/xjj?type=v'
     - 'http://api.yujn.cn/api/heisis.php'
     - 'http://api.yujn.cn/api/xjj.php'
